@@ -32,7 +32,7 @@ spec:
             - type: string
               string:
                 fmt: "%s-sn0" 
-        - fromFieldPath: "spec.nwtworkName"
+        - fromFieldPath: "spec.networkName"
           toFieldPath: "spec.forProvider.resourcesVpcConfig.subnetIdRefs[1].name" 
           transforms:
             - type: string
@@ -44,7 +44,7 @@ spec:
             - type: string
               string:
                 fmt: "%s-controlplane"
-        - fromFieldPath: "spec.nwtworkName"
+        - fromFieldPath: "spec.networkName"
           toFieldPath: "spec.forProvider.writeConnectionSecretToRef.name"
           transforms:
             - type: string
@@ -62,7 +62,7 @@ spec:
           providerConfigRef:
             name: aws-stack-template-provider
       patches:
-        - fromFieldPath: "spec.nwtworkName"
+        - fromFieldPath: "spec.networkName"
           toFieldPath: "metadata.name"
     - base:
         apiVersion: ec2.aws.crossplane.io/v1beta1
@@ -73,13 +73,13 @@ spec:
           providerConfigRef:
             name: aws-stack-template-provider
       patches:
-        - fromFieldPath: "spec.nwtworkName"
+        - fromFieldPath: "spec.networkName"
           toFieldPath: "metadata.name"
           transforms:
             - type: string
               string:
                 fmt: "%s-ig"
-        - fromFieldPath: "spec.nwtworkName"
+        - fromFieldPath: "spec.networkName"
           toFieldPath: "spec.forProvider.vpcIdRef.name"
     - base:
         apiVersion: ec2.aws.crossplane.io/v1beta1
@@ -97,13 +97,13 @@ spec:
           providerConfigRef:
             name: aws-stack-template-provider
       patches:
-        - fromFieldPath: "spec.nwtworkName"
+        - fromFieldPath: "spec.networkName"
           toFieldPath: "metadata.name"
           transforms:
             - type: string
               string:
                 fmt: "%s-sn0"
-        - fromFieldPath: "spec.nwtworkName"
+        - fromFieldPath: "spec.networkName"
           toFieldPath: "spec.forProvider.vpcIdRef.name"    
     - base:
         apiVersion: ec2.aws.crossplane.io/v1beta1
@@ -121,13 +121,13 @@ spec:
           providerConfigRef:
             name: aws-stack-template-provider
       patches:
-        - fromFieldPath: "spec.nwtworkName"
+        - fromFieldPath: "spec.networkName"
           toFieldPath: "metadata.name"
           transforms:
             - type: string
               string:
                 fmt: "%s-sn1"
-        - fromFieldPath: "spec.nwtworkName"
+        - fromFieldPath: "spec.networkName"
           toFieldPath: "spec.forProvider.vpcIdRef.name"
     - base:
         apiVersion: ec2.aws.crossplane.io/v1beta1
@@ -140,27 +140,27 @@ spec:
           providerConfigRef:
             name: aws-stack-template-provider
       patches:
-        - fromFieldPath: "spec.nwtworkName"
+        - fromFieldPath: "spec.networkName"
           toFieldPath: "metadata.name"
           transforms:
             - type: string
               string:
                 fmt: "%s-rt"
-        - fromFieldPath: "spec.nwtworkName"
+        - fromFieldPath: "spec.networkName"
           toFieldPath: "spec.forProvider.vpcIdRef.name"
-        - fromFieldPath: "spec.nwtworkName"
+        - fromFieldPath: "spec.networkName"
           toFieldPath: "spec.forProvider.routes[0].gatewayIdRef"
           transforms:
             - type: string
               string:
                 fmt: "%s-ig"
-        - fromFieldPath: "spec.nwtworkName"
+        - fromFieldPath: "spec.networkName"
           toFieldPath: "spec.forProvider.associations[0].subnetIdRef"
           transforms:
             - type: string
               string:
                 fmt: "%s-sn0"
-        - fromFieldPath: "spec.nwtworkName"
+        - fromFieldPath: "spec.networkName"
           toFieldPath: "spec.forProvider.associations[1].subnetIdRef"
           transforms:
             - type: string
@@ -197,7 +197,7 @@ spec:
             - type: string
               string:
                 fmt: "%s-sn0"
-        - fromFieldPath: "spec.nwtworkName"
+        - fromFieldPath: "spec.networkName"
           toFieldPath: "spec.forProvider.subnetRefs[1].name"
           transforms:
             - type: string
