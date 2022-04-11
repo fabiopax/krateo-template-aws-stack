@@ -38,7 +38,7 @@ spec:
             - type: string
               string:
                 fmt: "%s-sn1"
-        - fromFieldPath: "sspec.eks.component_id"
+        - fromFieldPath: "spec.eks.component_id"
           toFieldPath: "spec.forProvider.roleArnRef"
           transforms:
             - type: string
