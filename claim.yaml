@@ -1,0 +1,23 @@
+---
+apiVersion: modules.krateo.io/v1alpha1
+kind: aws-stack
+metadata:
+  name: krateo-module-core
+spec:
+  compositionSelector:
+    matchLabels:
+      platform: aws
+  eks:
+    name: #ex clusterRef
+    component_id: #values.component_id
+  network:
+    name: #ex networkRef spec.network.name
+  rds:
+    rdsRegion:
+    rdsDataDiskSizeGb:
+    rdsInstanceClass:
+    rdsEngineVersion:
+    rdsStorageType:
+    
+
+  
