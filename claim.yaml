@@ -2,16 +2,14 @@
 apiVersion: templates.krateo.io/v1alpha1
 kind: aws-stack
 metadata:
-  name: krateo-module-core
+  name: krateo-aws-stack
 spec:
   compositionSelector:
     matchLabels:
       platform: aws
-  eks:
-    name: #ex clusterRef
-    component_id: #values.component_id
-  network:
-    name: #ex networkRef spec.network.name
+  clusterName: #ex clusterRef
+  component_id: #values.component_id
+  networkName: #ex networkRef spec.network.name
   rds:
     rdsRegion:
     rdsDataDiskSizeGb:

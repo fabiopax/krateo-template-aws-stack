@@ -24,16 +24,16 @@ spec:
             providerConfigRef:
               name: aws-stack-template-provider        
       patches:
-        - fromFieldPath: "spec.eks.name"
+        - fromFieldPath: "spec.clusterName"
           toFieldPath: "metadata.name"
-        - fromFieldPath: "spec.eks.resourcesVpcConfig.subnetIdRefs"
-          toFieldPath: "spec.forProvider.resourcesVpcConfig.subnetIdRefs[0]" 
+        - fromFieldPath: "spec.network.name"
+          toFieldPath: "spec.forProvider.resourcesVpcConfig.subnetIdRefs[0].name" 
           transforms:
             - type: string
               string:
                 fmt: "%s-sn0" 
-        - fromFieldPath: "spec.network.name"
-          toFieldPath: "spec.forProvider.resourcesVpcConfig.subnetIdRefs[1]" 
+        - fromFieldPath: "spec.nwtworkName"
+          toFieldPath: "spec.forProvider.resourcesVpcConfig.subnetIdRefs[1].name" 
           transforms:
             - type: string
               string:
@@ -44,7 +44,7 @@ spec:
             - type: string
               string:
                 fmt: "%s-controlplane"
-        - fromFieldPath: "spec.network.name"
+        - fromFieldPath: "spec.nwtworkName"
           toFieldPath: "spec.forProvider.writeConnectionSecretToRef.name"
           transforms:
             - type: string
@@ -62,7 +62,7 @@ spec:
           providerConfigRef:
             name: aws-stack-template-provider
       patches:
-        - fromFieldPath: "spec.network.name"
+        - fromFieldPath: "spec.nwtworkName"
           toFieldPath: "metadata.name"
     - base:
         apiVersion: ec2.aws.crossplane.io/v1beta1
@@ -73,13 +73,13 @@ spec:
           providerConfigRef:
             name: aws-stack-template-provider
       patches:
-        - fromFieldPath: "spec.network.name"
+        - fromFieldPath: "spec.nwtworkName"
           toFieldPath: "metadata.name"
           transforms:
             - type: string
               string:
                 fmt: "%s-ig"
-        - fromFieldPath: "spec.network.name"
+        - fromFieldPath: "spec.nwtworkName"
           toFieldPath: "spec.forProvider.vpcIdRef.name"
     - base:
         apiVersion: ec2.aws.crossplane.io/v1beta1
@@ -97,13 +97,13 @@ spec:
           providerConfigRef:
             name: aws-stack-template-provider
       patches:
-        - fromFieldPath: "spec.network.name"
+        - fromFieldPath: "spec.nwtworkName"
           toFieldPath: "metadata.name"
           transforms:
             - type: string
               string:
                 fmt: "%s-sn0"
-        - fromFieldPath: "spec.network.name"
+        - fromFieldPath: "spec.nwtworkName"
           toFieldPath: "spec.forProvider.vpcIdRef.name"    
     - base:
         apiVersion: ec2.aws.crossplane.io/v1beta1
@@ -121,13 +121,13 @@ spec:
           providerConfigRef:
             name: aws-stack-template-provider
       patches:
-        - fromFieldPath: "spec.network.name"
+        - fromFieldPath: "spec.nwtworkName"
           toFieldPath: "metadata.name"
           transforms:
             - type: string
               string:
                 fmt: "%s-sn1"
-        - fromFieldPath: "spec.network.name"
+        - fromFieldPath: "spec.nwtworkName"
           toFieldPath: "spec.forProvider.vpcIdRef.name"
     - base:
         apiVersion: ec2.aws.crossplane.io/v1beta1
@@ -140,27 +140,27 @@ spec:
           providerConfigRef:
             name: aws-stack-template-provider
       patches:
-        - fromFieldPath: "spec.network.name"
+        - fromFieldPath: "spec.nwtworkName"
           toFieldPath: "metadata.name"
           transforms:
             - type: string
               string:
                 fmt: "%s-rt"
-        - fromFieldPath: "spec.network.name"
+        - fromFieldPath: "spec.nwtworkName"
           toFieldPath: "spec.forProvider.vpcIdRef.name"
-        - fromFieldPath: "spec.network.name"
+        - fromFieldPath: "spec.nwtworkName"
           toFieldPath: "spec.forProvider.routes[0].gatewayIdRef"
           transforms:
             - type: string
               string:
                 fmt: "%s-ig"
-        - fromFieldPath: "spec.network.name"
+        - fromFieldPath: "spec.nwtworkName"
           toFieldPath: "spec.forProvider.associations[0].subnetIdRef"
           transforms:
             - type: string
               string:
                 fmt: "%s-sn0"
-        - fromFieldPath: "spec.network.name"
+        - fromFieldPath: "spec.nwtworkName"
           toFieldPath: "spec.forProvider.associations[1].subnetIdRef"
           transforms:
             - type: string
@@ -177,13 +177,13 @@ spec:
           providerConfigRef:
             name: aws-stack-template-provider
       patches:
-        - fromFieldPath: "spec.eks.name"
+        - fromFieldPath: "spec.clusterName"
           toFieldPath: "metadata.name"
           transforms:
             - type: string
               string:
                 fmt: "%s-ng"
-        - fromFieldPath: "spec.eks.name"
+        - fromFieldPath: "spec.clusterName"
           toFieldPath: "spec.froProvider.clusternameRef"
         - fromFieldPath: "spec.nodeGroup.scalingConfig.minSize"
           toFieldPath: "spec.forProvider.scalingConfig.minSize"
@@ -191,19 +191,19 @@ spec:
           toFieldPath: "spec.forProvider.scalingConfig.maxSize"
         - fromFieldPath: "spec.nodeGroup.scalingConfig.desiredSize"
           toFieldPath: "spec.forProvider.scalingConfig.desiredSize"
-        - fromFieldPath: "spec.network.name"
+        - fromFieldPath: "spec.nwtworkNameName"
           toFieldPath: "spec.forProvider.subnetRefs[0].name"
           transforms:
             - type: string
               string:
                 fmt: "%s-sn0"
-        - fromFieldPath: "spec.network.name"
+        - fromFieldPath: "spec.nwtworkName"
           toFieldPath: "spec.forProvider.subnetRefs[1].name"
           transforms:
             - type: string
               string:
                 fmt: "%s-sn1"
-        - fromFieldPath: "spec.eks.name"
+        - fromFieldPath: "spec.clusterName"
           toFieldPath: "spec.forProvider.nodeRoleRef.name"
           transforms:
             - type: string
@@ -341,13 +341,13 @@ spec:
           providerConfigRef:
             name: aws-stack-template-provider
       patches: 
-        - fromFieldPath: "spec.eks.name"
+        - fromFieldPath: "spec.clusterName"
           toFieldPath: "memetadata.name"
           transforms:
             - type: string
               string:
                 fmt: "%s-ng-noderole"
-        - fromFieldPath: "spec.eks.name"
+        - fromFieldPath: "spec.clusterName"
           toFieldPath: "metadata.labels.name"
           transforms:
             - type: string
@@ -362,13 +362,13 @@ spec:
           providerConfigRef:
             name: aws-stack-template-provider
       patches:
-        - fromFieldPath: "spec.eks.name"
+        - fromFieldPath: "spec.clusterName"
           toFieldPath: "metadata.name"
           transforms:
             - type: string
               string:
                 fmt: "%s-ng-noderole-policy0"
-        - fromFieldPath: "spec.eks.name"
+        - fromFieldPath: "spec.clusterName"
           toFieldPath: "spec.forProvider.roleNameSelector.matchLabels.name"
           transforms:
             - type: string
@@ -383,13 +383,13 @@ spec:
           providerConfigRef:
             name: aws-stack-template-provider
       patches:
-        - fromFieldPath: "spec.eks.name"
+        - fromFieldPath: "spec.clusterName"
           toFieldPath: "metadata.name"
           transforms:
             - type: string
               string:
                 fmt: "%s-ng-noderole-policy1"
-        - fromFieldPath: "spec.eks.name"
+        - fromFieldPath: "spec.clusterName"
           toFieldPath: "spec.forProvider.roleNameSelector.matchLabels.name"
           transforms:
             - type: string
@@ -404,13 +404,13 @@ spec:
           providerConfigRef:
             name: aws-stack-template-provider
       patches:
-        - fromFieldPath: "spec.eks.name"
+        - fromFieldPath: "spec.clusterName"
           toFieldPath: "metadata.name"
           transforms:
             - type: string
               string:
                 fmt: "%s-ng-noderole-policy2"
-        - fromFieldPath: "spec.eks.name"
+        - fromFieldPath: "spec.clusterName"
           toFieldPath: "spec.forProvider.roleNameSelector.matchLabels.name"
           transforms:
             - type: string
