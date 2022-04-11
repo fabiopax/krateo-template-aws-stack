@@ -44,7 +44,7 @@ spec:
             - type: string
               string:
                 fmt: "%s-controlplane"
-        - fromFieldPath: "spec.network.networkName"
+        - fromFieldPath: "spec.name"
           toFieldPath: "spec.forProvider.writeConnectionSecretToRef.name"
           transforms:
             - type: string
