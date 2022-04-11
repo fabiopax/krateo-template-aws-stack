@@ -26,7 +26,7 @@ spec:
       patches:
         - fromFieldPath: "spec.clusterName"
           toFieldPath: "metadata.name"
-        - fromFieldPath: "spec.network.name"
+        - fromFieldPath: "spec.networkName"
           toFieldPath: "spec.forProvider.resourcesVpcConfig.subnetIdRefs[0].name" 
           transforms:
             - type: string
