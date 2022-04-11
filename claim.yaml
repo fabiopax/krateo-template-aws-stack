@@ -7,9 +7,11 @@ spec:
   compositionSelector:
     matchLabels:
       platform: aws
-  clusterName: #ex clusterRef
-  component_id: #values.component_id
-  networkName: #ex networkRef spec.network.name
+  eks:
+    clusterName: #ex clusterRef
+  name: #values.component_id
+  network:
+    networkName: #ex networkRef spec.network.name
   rds:
     rdsRegion:
     rdsDataDiskSizeGb:
