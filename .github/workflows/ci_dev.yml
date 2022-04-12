@@ -28,7 +28,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Discover github workspace
-        run: cat /home/runner/work/krateo-module-core/krateo-module-core/core/definition.yaml
+        run: cat /home/runner/work/krateo-template-aws-stack/krateo-template-aws-stack/aws-stack/definition.yaml
       - name: Build
         uses: crossplane-contrib/xpkg-action@v0.2.0
         with:
