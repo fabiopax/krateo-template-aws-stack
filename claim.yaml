@@ -18,6 +18,17 @@ spec:
     rdsInstanceClass:
     rdsEngineVersion:
     rdsStorageType:
-    
+  fromRepo:
+    domain: github.com
+    provider: github
+    apiUrl: https://api.github.com/
+    repositoryName: krateo-template-sample
+    organizationName: krateoplatformops
+  toRepo:
+    domain: "${{ domain }}"
+    provider: "${{ provider }}"
+    apiUrl: https://api.github.com/
+    repositoryName: "${{ repositoryName }}"
+    organizationName: "${{ organizationName }}"
 
   
