@@ -8,16 +8,16 @@ spec:
     matchLabels:
       platform: aws
   eks:
-    clusterName: #ex clusterRef
-  name: #values.component_id
+    clusterName: "${{ clusterName }}"
+  name: "${{ name }}"
   network:
-    networkName: #ex networkRef spec.network.name
+    networkName: "${{ network }}"
   rds:
-    rdsRegion:
-    rdsDataDiskSizeGb:
-    rdsInstanceClass:
-    rdsEngineVersion:
-    rdsStorageType:
+    rdsRegion: "${{ rdsRegion }}"
+    rdsDataDiskSizeGb: "${{ rdsDataDiskSizeGb }}"
+    rdsInstanceClass: "${{ rdsInstanceClass }}"
+    rdsEngineVersion: "${{ rdsEngineVersion }}"
+    rdsStorageType: "${{ rdsStorageType }}"
   fromRepo:
     domain: github.com
     provider: github
