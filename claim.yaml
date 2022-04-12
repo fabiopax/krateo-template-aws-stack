@@ -2,7 +2,7 @@
 apiVersion: templates.krateo.io/v1alpha1
 kind: aws-stack
 metadata:
-  name: krateo-aws-stack
+  name: aws-stack
 spec:
   compositionSelector:
     matchLabels:
@@ -22,7 +22,7 @@ spec:
     domain: github.com
     provider: github
     apiUrl: https://api.github.com/
-    repositoryName: krateo-template-sample
+    repositoryName: krateo-template-aws-stack
     organizationName: krateoplatformops
   toRepo:
     domain: "${{ domain }}"
