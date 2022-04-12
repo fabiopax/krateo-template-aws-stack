@@ -1,0 +1,450 @@
+---
+apiVersion: apiextensions.crossplane.io/v1
+kind: Composition
+metadata:
+  name: deploy.aws-stack.templates.krateo.io
+  labels:
+    platform: aws
+spec:
+  compositeTypeRef:
+    apiVersion: templates.krateo.io/v1alpha1
+    kind: aws-stack
+  resources:
+    - base:
+        apiVersion: eks.aws.crossplane.io/v1beta1
+        kind: Cluster
+        spec:
+          forProvider:
+            region: eu-central-1
+            resourcesVpcConfig:
+              endpointPrivateAccess: true
+              endpointPublicAccess: true
+            writeConnectionSecretToRef:
+              namesapce: crossplane-system
+            providerConfigRef:
+              name: aws-stack-template-provider        
+      patches:
+        - fromFieldPath: "spec.eks.clusterName"
+          toFieldPath: "metadata.name"
+        - fromFieldPath: "spec.network.networkName"
+          toFieldPath: "spec.forProvider.resourcesVpcConfig.subnetIdRefs[0].name" 
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-sn0" 
+        - fromFieldPath: "spec.network.networkName"
+          toFieldPath: "spec.forProvider.resourcesVpcConfig.subnetIdRefs[1].name" 
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-sn1"
+        - fromFieldPath: "spec.name"
+          toFieldPath: "spec.forProvider.roleArnRef"
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-controlplane"
+        - fromFieldPath: "spec.name"
+          toFieldPath: "spec.forProvider.writeConnectionSecretToRef.name"
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-eks-kubeconfig" 
+    - base:
+        apiVersion: ec2.aws.crossplane.io/v1beta1
+        kind: VPC
+        spec:
+          forProvider:
+            region: eu-central-1
+            cidrBlock: 10.1.0.0/16
+            enableDnsSupport: true
+            enableDnsHostNames: true
+          providerConfigRef:
+            name: aws-stack-template-provider
+      patches:
+        - fromFieldPath: "spec.network.networkName"
+          toFieldPath: "metadata.name"
+    - base:
+        apiVersion: ec2.aws.crossplane.io/v1beta1
+        kind: InternetGateway
+        spec:
+          forProvider:
+            region: eu-central-1
+          providerConfigRef:
+            name: aws-stack-template-provider
+      patches:
+        - fromFieldPath: "spec.network.networkName"
+          toFieldPath: "metadata.name"
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-ig"
+        - fromFieldPath: "spec.network.networkName"
+          toFieldPath: "spec.forProvider.vpcIdRef.name"
+    - base:
+        apiVersion: ec2.aws.crossplane.io/v1beta1
+        kind: Subnet
+        metadata:
+          labels: 
+            zone: eu-central-1a
+            access: private
+        spec:
+          forProvider:
+            region: eu-central-1
+            mapPublicIPOnLaunch: true
+            cidrBlock: 10.1.1.0/24
+            availabilityZone: eu-central-1a
+          providerConfigRef:
+            name: aws-stack-template-provider
+      patches:
+        - fromFieldPath: "spec.network.networkName"
+          toFieldPath: "metadata.name"
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-sn0"
+        - fromFieldPath: "spec.network.networkName"
+          toFieldPath: "spec.forProvider.vpcIdRef.name"    
+    - base:
+        apiVersion: ec2.aws.crossplane.io/v1beta1
+        kind: Subnet
+        metadata:
+          labels: 
+            zone: eu-central-1b
+            access: private
+        spec:
+          forProvider:
+            region: eu-central-1
+            mapPublicIPOnLaunch: true
+            cidrBlock: 10.1.2.0/24
+            availabilityZone: eu-central-1b
+          providerConfigRef:
+            name: aws-stack-template-provider
+      patches:
+        - fromFieldPath: "spec.network.networkName"
+          toFieldPath: "metadata.name"
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-sn1"
+        - fromFieldPath: "spec.network.networkName"
+          toFieldPath: "spec.forProvider.vpcIdRef.name"
+    - base:
+        apiVersion: ec2.aws.crossplane.io/v1beta1
+        kind: RouteTable
+        spec:
+          forProvider:
+            region: eu-central-1
+            routes:
+              - destinationCidrBlock: 0.0.0.0/0
+          providerConfigRef:
+            name: aws-stack-template-provider
+      patches:
+        - fromFieldPath: "spec.network.networkName"
+          toFieldPath: "metadata.name"
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-rt"
+        - fromFieldPath: "spec.network.networkName"
+          toFieldPath: "spec.forProvider.vpcIdRef.name"
+        - fromFieldPath: "spec.network.networkName"
+          toFieldPath: "spec.forProvider.routes[0].gatewayIdRef"
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-ig"
+        - fromFieldPath: "spec.network.networkName"
+          toFieldPath: "spec.forProvider.associations[0].subnetIdRef"
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-sn0"
+        - fromFieldPath: "spec.network.networkName"
+          toFieldPath: "spec.forProvider.associations[1].subnetIdRef"
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-sn1"     
+    - base:
+        apiVersion: eks.aws.crossplane.io/v1alpha1
+        kind: NodeGroup
+        spec:
+          forProvider:
+            region: eu-central-1
+            instanceTypes:
+              - t3.medium
+          providerConfigRef:
+            name: aws-stack-template-provider
+      patches:
+        - fromFieldPath: "spec.eks.clusterName"
+          toFieldPath: "metadata.name"
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-ng"
+        - fromFieldPath: "spec.eks.clusterName"
+          toFieldPath: "spec.froProvider.clusternameRef"
+        - fromFieldPath: "spec.nodeGroup.scalingConfig.minSize"
+          toFieldPath: "spec.forProvider.scalingConfig.minSize"
+        - fromFieldPath: "spec.nodeGroup.scalingConfig.maxSize"
+          toFieldPath: "spec.forProvider.scalingConfig.maxSize"
+        - fromFieldPath: "spec.nodeGroup.scalingConfig.desiredSize"
+          toFieldPath: "spec.forProvider.scalingConfig.desiredSize"
+        - fromFieldPath: "spec.nwtworkNameName"
+          toFieldPath: "spec.forProvider.subnetRefs[0].name"
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-sn0"
+        - fromFieldPath: "spec.network.networkName"
+          toFieldPath: "spec.forProvider.subnetRefs[1].name"
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-sn1"
+        - fromFieldPath: "spec.eks.clusterName"
+          toFieldPath: "spec.forProvider.nodeRoleRef.name"
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-ng-noderole"            
+    - base:
+        apiVersion: aws.crossplane.io/v1beta1
+        kind: ProviderConfig
+        metadata:
+          name: aws-stack-template-provider
+        spec:
+          credentials:
+            source: Secret
+            secretRef:
+              namespace: crossplane-system
+              name: aws-creds
+              key: credentials
+    - base:
+        apiVersion: database.aws.crossplane.io/v1beta1
+        kind: RDSInstance
+        spec:
+          forProvider:
+            autoMinorVersionUpgrade: true
+            backupRetentionPeriod: 0
+            caCertificateIdentifier: rds-ca-2019
+            copyTagsToSnapshot: false
+            deletionProtection: false
+            enableIAMDatabaseAuthentication: false
+            enablePerformanceInsights: false
+            engine: postgres
+            licenseModel: postgresql-license
+            masterUsername: amministratore
+            multiAZ: false
+            skipFinalSnapshotBeforeDeletion: true
+            port: 5432
+            publiclyAccessible: true
+            storageEncrypted: false
+          writeConnectionSecretToRef:
+            namespace: crossplane-system
+          providerConfigRef:
+            name: aws-stack-template-provider
+      patches:
+        - fromFieldPath: "spec.rds.name"
+          toFieldPath: "metadata.name"
+        - fromFieldPath: "spec.rds.region"
+          toFieldPath: "spec.forProvider.region"
+        - fromFieldPath: "spec.rds.allocatedStorage"
+          toFieldPath: "spec.forProvider.allocatedStorage"
+        - fromFieldPath: "spec.rds.dbInstanceClass"
+          toFieldPath: "spec.forProvider.dbInstanceClass"
+        - fromFieldPath: "spec.rds.engineVersion"
+          toFieldPath: "spec.forProvider.engineVersion"
+        - fromFieldPath: "spec.rds.storageType"
+          toFieldPath: "spec.forProvider.storageType"
+        - fromFieldPath: "spec.eks.name" # ex component id
+          toFieldPath: "spec.forProvider.writeConnectionSecretToRef.name"
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-rdspostgresql-conn"
+    - base:
+        apiVersion: identity.aws.crossplane.io/v1beta1
+        kind: IAMRole
+        spec:
+          forProvider:
+            assumeRolePolicyDocument: |
+              {
+                "Version": "2012-10-17",
+                "Statement": [
+                    {
+                        "Effect": "Allow",
+                        "Principal": {
+                            "Service": [
+                                "eks.amazonaws.com"
+                            ]
+                        },
+                        "Action": [
+                            "sts:AssumeRole"
+                        ]
+                    }
+                ]
+              }
+          providerConfigRef:
+            name: aws-stack-template-provider
+      patches: 
+        - fromFieldPath: "spec.eks.name"
+          toFieldPath: "metadata.name"
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-controlplane"
+    - base:
+        apiVersion: identity.aws.crossplane.io/v1beta1
+        kind: IAMRolePolicyAttachment
+        spec:
+          forProvider:
+            policyArn: arn:aws:iam::aws:policy/AmazonEKSClusterPolicy
+          providerConfigRef:
+            name: aws-stack-template-provider
+      patches:
+        - fromFieldPath: "spec.roles.policyAttachment.name"
+          toFieldPath: "meatdata.name"
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-controlplane"
+        - fromFieldPath: "spec.eks.name" #ex component id
+          toFieldPath: "spec.forProvider.roleNameRef.name"
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-controlplane"
+    - base:
+        apiVersion: identity.aws.crossplane.io/v1beta1
+        kind: IAMRole
+        spec:
+          forProvider:
+            assumeRolePolicyDocument: |
+              {
+                "Version": "2012-10-17",
+                "Statement": [
+                    {
+                        "Effect": "Allow",
+                        "Principal": {
+                            "Service": [
+                                "ec2.amazonaws.com"
+                            ]
+                        },
+                        "Action": [
+                            "sts:AssumeRole"
+                        ]
+                    }
+                ]
+              }
+          providerConfigRef:
+            name: aws-stack-template-provider
+      patches: 
+        - fromFieldPath: "spec.eks.clusterName"
+          toFieldPath: "memetadata.name"
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-ng-noderole"
+        - fromFieldPath: "spec.eks.clusterName"
+          toFieldPath: "metadata.labels.name"
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-ng-noderole"   
+    - base: 
+        apiVersion: identity.aws.crossplane.io/v1beta1
+        kind: IAMRolePolicyAttachment
+        spec:
+          forProvider:
+            policyArn: arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy
+          providerConfigRef:
+            name: aws-stack-template-provider
+      patches:
+        - fromFieldPath: "spec.eks.clusterName"
+          toFieldPath: "metadata.name"
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-ng-noderole-policy0"
+        - fromFieldPath: "spec.eks.clusterName"
+          toFieldPath: "spec.forProvider.roleNameSelector.matchLabels.name"
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-ng-noderole" 
+    - base:
+        apiVersion: identity.aws.crossplane.io/v1beta1
+        kind: IAMRolePolicyAttachment
+        spec:
+          forProvider:
+            policyArn: arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy
+          providerConfigRef:
+            name: aws-stack-template-provider
+      patches:
+        - fromFieldPath: "spec.eks.clusterName"
+          toFieldPath: "metadata.name"
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-ng-noderole-policy1"
+        - fromFieldPath: "spec.eks.clusterName"
+          toFieldPath: "spec.forProvider.roleNameSelector.matchLabels.name"
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-ng-noderole"
+    - base:
+        apiVersion: identity.aws.crossplane.io/v1beta1
+        kind: IAMRolePolicyAttachment
+        spec:
+          forProvider:
+            policyArn: arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
+          providerConfigRef:
+            name: aws-stack-template-provider
+      patches:
+        - fromFieldPath: "spec.eks.clusterName"
+          toFieldPath: "metadata.name"
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-ng-noderole-policy2"
+        - fromFieldPath: "spec.eks.clusterName"
+          toFieldPath: "spec.forProvider.roleNameSelector.matchLabels.name"
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-ng-noderole"
+
+    - base:
+        apiVersion: argoproj.io/v1alpha1
+        kind: Application
+        metadata:
+          namespace: krateo-system
+        spec:
+          project: default
+          source:
+            targetRevision: HEAD
+          destination:
+            server: https://kubernetes.default.svc
+            namespace: krateo-system
+      patches:
+        - fromFieldPath: "metadata.name"
+          toFieldPath: "metadata.name"
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-argocd-app"
+        - fromFieldPath: "spec.toRepo.repositoryName"
+          toFieldPath: "spec.source.repoURL"
+        - type: CombineToComposite
+          combine:
+            variables: 
+              - fromFieldPath: "spec.toRepo.domain"
+              - fromFieldPath: "spec.toRepo.organizationName"
+              - fromFieldPath: "spec.toRepo.repositoryName"
+            strategy: string
+            string:
+              fmt: "https://%s/%s/%s"
+          toFieldPath: "spec.source.repoURL"

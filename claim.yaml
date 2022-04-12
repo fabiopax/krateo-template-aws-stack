@@ -1,0 +1,34 @@
+---
+apiVersion: templates.krateo.io/v1alpha1
+kind: aws-stack
+metadata:
+  name: aws-stack
+spec:
+  compositionSelector:
+    matchLabels:
+      platform: aws
+  eks:
+    clusterName: "${{ clusterName }}"
+  name: "${{ name }}"
+  network:
+    networkName: "${{ network }}"
+  rds:
+    rdsRegion: "${{ rdsRegion }}"
+    rdsDataDiskSizeGb: "${{ rdsDataDiskSizeGb }}"
+    rdsInstanceClass: "${{ rdsInstanceClass }}"
+    rdsEngineVersion: "${{ rdsEngineVersion }}"
+    rdsStorageType: "${{ rdsStorageType }}"
+  fromRepo:
+    domain: github.com
+    provider: github
+    apiUrl: https://api.github.com/
+    repositoryName: krateo-template-aws-stack
+    organizationName: krateoplatformops
+  toRepo:
+    domain: "${{ domain }}"
+    provider: "${{ provider }}"
+    apiUrl: "${{ apiUrl }}"
+    repositoryName: "${{ repositoryName }}"
+    organizationName: "${{ organizationName }}"
+
+  
