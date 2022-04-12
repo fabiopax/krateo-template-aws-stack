@@ -27,7 +27,7 @@ spec:
   toRepo:
     domain: "${{ domain }}"
     provider: "${{ provider }}"
-    apiUrl: https://api.github.com/
+    apiUrl: "${{ apiUrl }}"
     repositoryName: "${{ repositoryName }}"
     organizationName: "${{ organizationName }}"
 
