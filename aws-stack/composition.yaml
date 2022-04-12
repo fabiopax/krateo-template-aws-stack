@@ -22,18 +22,18 @@ spec:
             writeConnectionSecretToRef:
               namesapce: crossplane-system
             providerConfigRef:
-              name: aws-stack-template-provider        
+              name: aws-stack-template-provider
       patches:
         - fromFieldPath: "spec.eks.clusterName"
           toFieldPath: "metadata.name"
         - fromFieldPath: "spec.network.networkName"
-          toFieldPath: "spec.forProvider.resourcesVpcConfig.subnetIdRefs[0].name" 
+          toFieldPath: "spec.forProvider.resourcesVpcConfig.subnetIdRefs[0].name"
           transforms:
             - type: string
               string:
-                fmt: "%s-sn0" 
+                fmt: "%s-sn0"
         - fromFieldPath: "spec.network.networkName"
-          toFieldPath: "spec.forProvider.resourcesVpcConfig.subnetIdRefs[1].name" 
+          toFieldPath: "spec.forProvider.resourcesVpcConfig.subnetIdRefs[1].name"
           transforms:
             - type: string
               string:
@@ -49,7 +49,7 @@ spec:
           transforms:
             - type: string
               string:
-                fmt: "%s-eks-kubeconfig" 
+                fmt: "%s-eks-kubeconfig"
     - base:
         apiVersion: ec2.aws.crossplane.io/v1beta1
         kind: VPC
@@ -85,7 +85,7 @@ spec:
         apiVersion: ec2.aws.crossplane.io/v1beta1
         kind: Subnet
         metadata:
-          labels: 
+          labels:
             zone: eu-central-1a
             access: private
         spec:
@@ -104,12 +104,12 @@ spec:
               string:
                 fmt: "%s-sn0"
         - fromFieldPath: "spec.network.networkName"
-          toFieldPath: "spec.forProvider.vpcIdRef.name"    
+          toFieldPath: "spec.forProvider.vpcIdRef.name"
     - base:
         apiVersion: ec2.aws.crossplane.io/v1beta1
         kind: Subnet
         metadata:
-          labels: 
+          labels:
             zone: eu-central-1b
             access: private
         spec:
@@ -165,7 +165,7 @@ spec:
           transforms:
             - type: string
               string:
-                fmt: "%s-sn1"     
+                fmt: "%s-sn1"
     - base:
         apiVersion: eks.aws.crossplane.io/v1alpha1
         kind: NodeGroup
@@ -208,7 +208,7 @@ spec:
           transforms:
             - type: string
               string:
-                fmt: "%s-ng-noderole"            
+                fmt: "%s-ng-noderole"
     - base:
         apiVersion: aws.crossplane.io/v1beta1
         kind: ProviderConfig
@@ -288,7 +288,7 @@ spec:
               }
           providerConfigRef:
             name: aws-stack-template-provider
-      patches: 
+      patches:
         - fromFieldPath: "spec.eks.name"
           toFieldPath: "metadata.name"
           transforms:
@@ -340,7 +340,7 @@ spec:
               }
           providerConfigRef:
             name: aws-stack-template-provider
-      patches: 
+      patches:
         - fromFieldPath: "spec.eks.clusterName"
           toFieldPath: "memetadata.name"
           transforms:
@@ -352,8 +352,8 @@ spec:
           transforms:
             - type: string
               string:
-                fmt: "%s-ng-noderole"   
-    - base: 
+                fmt: "%s-ng-noderole"
+    - base:
         apiVersion: identity.aws.crossplane.io/v1beta1
         kind: IAMRolePolicyAttachment
         spec:
@@ -373,7 +373,7 @@ spec:
           transforms:
             - type: string
               string:
-                fmt: "%s-ng-noderole" 
+                fmt: "%s-ng-noderole"
     - base:
         apiVersion: identity.aws.crossplane.io/v1beta1
         kind: IAMRolePolicyAttachment
@@ -440,7 +440,7 @@ spec:
           toFieldPath: "spec.source.repoURL"
         - type: CombineToComposite
           combine:
-            variables: 
+            variables:
               - fromFieldPath: "spec.toRepo.domain"
               - fromFieldPath: "spec.toRepo.organizationName"
               - fromFieldPath: "spec.toRepo.repositoryName"

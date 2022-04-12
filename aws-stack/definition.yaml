@@ -56,7 +56,7 @@ spec:
                     vpc:
                       type: object
                       properties:
-                        name: 
+                        name:
                           type: string
                         region:
                           type: string
@@ -180,11 +180,11 @@ spec:
                 rds:
                   type: object
                   properties:
-                    name: 
+                    name:
                       type: string
                     region:
                       type: string
-                    allocatedStorage: 
+                    allocatedStorage:
                       type: number
                     autoMinorVersionUpgrade:
                       type: boolean
@@ -196,7 +196,7 @@ spec:
                       type: boolean
                     dbInstanceClass:
                       type: string
-                    deletionProtection: 
+                    deletionProtection:
                       type: boolean
                     enableIAMDatabaseAuthentication:
                       type: boolean
@@ -204,28 +204,28 @@ spec:
                       type: boolean
                     engine:
                       type: string
-                    engineVersion: 
+                    engineVersion:
                       type: string
                     licenseModel:
                       type: string
-                    masterUsername: 
+                    masterUsername:
                       type: string
                     multiAZ:
                       type: boolean
                     skipFinalSnapshotBeforeDeletion:
                       type: boolean
-                    port: 
+                    port:
                       type: number
                     publiclyAccessible:
                       type: boolean
                     storageEncrypted:
                       type: boolean
-                    storageType: 
+                    storageType:
                       type: string
                     writeConnectionSecretToRef:
                       type: object
                       properties:
-                        name: 
+                        name:
                           type: string
                         namespace:
                           type: string
@@ -243,9 +243,9 @@ spec:
                           type: string #it's actually a json
                         providerConfigRef: #.name
                           type: string
-                        label: 
+                        label:
                           type: string
-                        clusterRef: 
+                        clusterRef:
                           type: string
                     policyAttachment:
                       type: object
@@ -260,4 +260,3 @@ spec:
                           type: string
                         roleNameSelector:
                           type: string
-                    

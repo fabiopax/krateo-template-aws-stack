@@ -30,5 +30,3 @@ spec:
     apiUrl: "${{ apiUrl }}"
     repositoryName: "${{ repositoryName }}"
     organizationName: "${{ organizationName }}"
-
-  
