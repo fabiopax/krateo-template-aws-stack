@@ -28,13 +28,13 @@ spec:
 
     - title: Kubernetes
       properties:
-        network:
-          title: Network name
-          description: The VPC network to use
-          required: true
         clusterName:
           title: Cluster Name
           description: The name of the cluster
+          required: true
+        network:
+          title: Network name
+          description: The VPC network to use
           required: true
         clusterNodes:
           title: Cluster Nodes
