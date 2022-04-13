@@ -31,4 +31,4 @@ spec:
     apiUrl: "${{ apiUrl }}"
     repositoryName: "${{ repositoryName }}"
     organizationName: "${{ organizationName }}"
-    schema: ${{ schema }} #it's the procvol for the url
+    schema: ${{ schema }} #it's the protocol for the url
