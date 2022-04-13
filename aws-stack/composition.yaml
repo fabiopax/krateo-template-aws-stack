@@ -436,15 +436,14 @@ spec:
             - type: string
               string:
                 fmt: "%s-argocd-app"
-        - fromFieldPath: "spec.toRepo.repositoryName"
-          toFieldPath: "spec.source.repoURL"
         - type: CombineToComposite
           combine:
             variables:
+              - fromFieldPath: "spec.toRepo.schema"
               - fromFieldPath: "spec.toRepo.domain"
               - fromFieldPath: "spec.toRepo.organizationName"
               - fromFieldPath: "spec.toRepo.repositoryName"
             strategy: string
             string:
-              fmt: "https://%s/%s/%s"
+              fmt: "%s://%s/%s/%s"
           toFieldPath: "spec.source.repoURL"

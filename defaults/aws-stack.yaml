@@ -24,9 +24,11 @@ spec:
     apiUrl: https://api.github.com/
     repositoryName: krateo-template-aws-stack
     organizationName: krateoplatformops
+    schema: https
   toRepo:
     domain: "${{ domain }}"
     provider: "${{ provider }}"
     apiUrl: "${{ apiUrl }}"
     repositoryName: "${{ repositoryName }}"
     organizationName: "${{ organizationName }}"
+    schema: ${{ schema }} #it's the protocol for the url
