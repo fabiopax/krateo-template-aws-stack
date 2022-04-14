@@ -475,7 +475,6 @@ spec:
                     icon: "fa-brands fa-aws"
                 plugins:
                   - name: resources
-                owner: ${{ owner }}
       patches:
         - fromFieldPath: "spec.dashboard.description"
           toFieldPath: "spec.forProvider.manifest.spec.description"
