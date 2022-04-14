@@ -296,20 +296,24 @@ spec:
                     description:
                       type: string
                     links:
-                      type: object
-                      properties: 
-                        url:
-                          type: string
-                        title:
-                          type: string
-                        icon: 
-                          type: string
-                      plugins:
+                      type: array
+                      items:
                         type: object
                         properties:
-                          name: 
+                          url:
                             type: string
-                          value:
+                          title:
                             type: string
+                          icon: 
+                            type: string
+                      plugins:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            name: 
+                              type: string
+                            value:
+                              type: string
                       owner: 
                         type: string
