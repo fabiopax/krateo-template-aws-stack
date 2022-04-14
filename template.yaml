@@ -40,6 +40,7 @@ spec:
           title: Cluster Nodes
           description: The number of nodes in the cluster
           required: true
+          type: number
           default: 2
 
     - title: Database
