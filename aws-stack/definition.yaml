@@ -288,3 +288,32 @@ spec:
                     type: string
                   schema:
                     type: string
+                dashboard:
+                  type: object
+                  properties:
+                    name: 
+                      type: string
+                    description:
+                      type: string
+                    links:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          url:
+                            type: string
+                          title:
+                            type: string
+                          icon: 
+                            type: string
+                      plugins:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            name: 
+                              type: string
+                            value:
+                              type: string
+                      owner: 
+                        type: string
