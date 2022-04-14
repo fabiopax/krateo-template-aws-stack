@@ -296,7 +296,7 @@ spec:
                     description:
                       type: string
                     links:
-                      type: list
+                      type: object
                       properties: 
                         url:
                           type: string
@@ -305,7 +305,7 @@ spec:
                         icon: 
                           type: string
                       plugins:
-                        type: list
+                        type: object
                         properties:
                           name: 
                             type: string

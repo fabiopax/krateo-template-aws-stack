@@ -416,8 +416,7 @@ spec:
             - type: string
               string:
                 fmt: "%s-ng-noderole"
-
-    - base:
+    - base: #TODO thsi should probably be a k8s provider object
         apiVersion: argoproj.io/v1alpha1
         kind: Application
         metadata:
