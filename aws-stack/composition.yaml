@@ -416,7 +416,7 @@ spec:
             - type: string
               string:
                 fmt: "%s-ng-noderole"
-    - base: #TODO thsi should probably be a k8s provider object
+    - base:
         apiVersion: kubernetes.crossplane.io/v1alpha1
         kind: Object
         spec:
@@ -461,7 +461,6 @@ spec:
               kind: Deployment
               metadata:
               spec:
-                name: ${{ name }}
                 icon: "fa-brands fa-aws"
                 tags:
                   - aws
