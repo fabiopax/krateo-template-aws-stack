@@ -4,12 +4,31 @@ kind: aws-stack
 metadata:
   name: aws-stack
 spec:
+  dashboard:
+    description: ${{ description }}
+    icon: "fa-brands fa-aws"
+    tags:
+      - aws
+      - stack
+      - infrastructure
+      - rds
+    links:
+      - url: https://${{ provider }}/${{ organizationName }}/${{ repositoryName }}
+        title: ${{ organizationName }}/${{ repositoryName }}
+        icon: "fa-brands fa-git"
+      - url: https://kiratech.awsapps.com/start#/
+        title: AWS Console
+        icon: "fa-brands fa-aws"
+    plugins:
+      - name: resources
+        value: ${{ organizationName }}-${{ repositoryName }}
+    owner: ${{ owner }}
+  name: "${{ name }}"
   compositionSelector:
     matchLabels:
       platform: aws
   eks:
     clusterName: "${{ clusterName }}"
-  name: "${{ name }}"
   network:
     networkName: "${{ network }}"
   rds:

@@ -1,0 +1,100 @@
+apiVersion: krateo.io/v1alpha1
+kind: Template
+metadata:
+  name: aws-stack-template
+  annotations:
+    title: AWS Stack template
+    description: Krateo Template Sample aws stack
+    icon: fa-brands fa-aws
+    owner: mauro.sala@kiratech.it
+  labels:
+    tags:
+      - aws
+      - eks
+      - rds
+      - stack
+spec:
+  widgets:
+    - title: Name and description
+      properties:
+        name:
+          title: Name
+          description: Unique name of the component
+          required: true
+        description:
+          title: Description
+          description: Help others understand what this service does.
+          required: true
+
+    - title: Kubernetes
+      properties:
+        clusterName:
+          title: Cluster Name
+          description: The name of the cluster
+          required: true
+        network:
+          title: Network name
+          description: The VPC network to use
+          required: true
+        clusterNodes:
+          title: Cluster Nodes
+          description: The number of nodes in the cluster
+          required: true
+          default: 2
+
+    - title: Database
+      properties:
+        rdsName:
+          title: Rds Name
+          description: The name of the RDS
+          required: true
+        rdsInstanceClass:
+          title: Rds Instance Class
+          description: The instance class of the RDS
+          required: true
+          default: db.t3.micro
+        rdsEngine:
+          title: Rds Engine
+          description: The engine of the RDS
+          required: true
+          default: postgres
+        rdsEngineVersion:
+          title: Rds Engine Version
+          description: The engine version of the RDS
+          required: true
+          default: 13.4
+        rdsDataDiskSizeGb:
+          title: Rds Disk Size
+          description: The size of the RDS disk
+          required: true
+          default: 10
+        rdsRegion:
+          title: Rds Region
+          description: The region of the RDS
+          required: true
+          default: eu-central-1
+        rdsStorageType:
+          title: Rds Storage Type
+          description: The storage type of the RDS
+          required: true
+          default: standard
+
+    - title: Git repository destination
+      properties:
+        provider:
+          title: Git Provider
+          description: gitgub.com / gitlab.com / bitbucket.org
+          required: true
+          default: github.com
+          values:
+            - bitbucket.org
+            - github.com
+            - gitlab.com
+        organizationName:
+          title: Repository Organization
+          required: true
+          description: Organization name
+        repositoryName:
+          title: Repository Name
+          required: true
+          description: The name of the repository
