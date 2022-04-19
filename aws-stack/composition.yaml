@@ -149,7 +149,7 @@ spec:
         - fromFieldPath: "spec.network.networkName"
           toFieldPath: "spec.forProvider.vpcIdRef.name"
         - fromFieldPath: "spec.network.networkName"
-          toFieldPath: "spec.forProvider.routes[0].gatewayIdRef"
+          toFieldPath: "spec.forProvider.routes[0].gatewayIdRef.name"
           transforms:
             - type: string
               string:
