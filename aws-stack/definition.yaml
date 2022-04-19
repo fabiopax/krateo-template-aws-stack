@@ -276,18 +276,20 @@ spec:
                     schema: 
                       type: string
                 toRepo:
-                  domain: 
-                    type: string
-                  provider:
-                    type: string
-                  apiUrl: 
-                    type: string
-                  repositoryName:
-                    type: string
-                  organizationName:
-                    type: string
-                  schema:
-                    type: string
+                  type: object
+                    properties:
+                      domain:
+                        type: string
+                      provider:
+                        type: string
+                      apiUrl:
+                        type: string
+                      repositoryName:
+                        type: string
+                      organizationName:
+                        type: string
+                      schema:
+                        type: string
                 dashboard:
                   type: object
                   properties:
