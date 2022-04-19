@@ -25,7 +25,7 @@ spec:
                 eks:
                   type: object
                   properties:
-                    name: #ex cluster ref
+                    clusterName: #ex cluster ref
                       type: string
                     region:
                       type: string
@@ -53,7 +53,7 @@ spec:
                 network:
                   type: object
                   properties:
-                    name:
+                    networkName:
                       type: string
                     vpc:
                       type: object
