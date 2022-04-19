@@ -155,13 +155,13 @@ spec:
               string:
                 fmt: "%s-ig"
         - fromFieldPath: "spec.network.networkName"
-          toFieldPath: "spec.forProvider.associations[0].subnetIdRef"
+          toFieldPath: "spec.forProvider.associations[0].subnetIdRef.name"
           transforms:
             - type: string
               string:
                 fmt: "%s-sn0"
         - fromFieldPath: "spec.network.networkName"
-          toFieldPath: "spec.forProvider.associations[1].subnetIdRef"
+          toFieldPath: "spec.forProvider.associations[1].subnetIdRef.name"
           transforms:
             - type: string
               string:
