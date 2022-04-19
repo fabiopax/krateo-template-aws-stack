@@ -258,7 +258,7 @@ spec:
           toFieldPath: "spec.forProvider.engineVersion"
         - fromFieldPath: "spec.rds.storageType"
           toFieldPath: "spec.forProvider.storageType"
-        - fromFieldPath: "spec.eks.name" # ex component id
+        - fromFieldPath: "spec.eks.clusterName" # ex component id
           toFieldPath: "spec.writeConnectionSecretToRef.name"
           transforms:
             - type: string

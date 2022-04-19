@@ -14,7 +14,7 @@ spec:
     networkName: test-aws-meetup-network
   rds:
     region: eu-central-1
-    dataDiskSizeGb: '10'
+    allocatedStorage: 10 #ex dataDiskSizeGb
     dbInstanceClass: db.t3.micro
     engineVersion: '13.4'
     storageType: standard
