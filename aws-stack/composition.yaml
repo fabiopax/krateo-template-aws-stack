@@ -416,21 +416,26 @@ spec:
             - type: string
               string:
                 fmt: "%s-ng-noderole"
-    - base: #TODO thsi should probably be a k8s provider object
-        apiVersion: argoproj.io/v1alpha1
-        kind: Application
-        metadata:
-          namespace: krateo-system
+    - base:
+        apiVersion: kubernetes.crossplane.io/v1alpha1
+        kind: Object
         spec:
-          project: default
-          source:
-            targetRevision: HEAD
-          destination:
-            server: https://kubernetes.default.svc
-            namespace: krateo-system
+          forProvider:
+            manifest:
+              apiVersion: argoproj.io/v1alpha1
+              kind: Application
+              metadata:
+                namespace: krateo-system
+              spec:
+                project: default
+                source:
+                  targetRevision: HEAD
+                destination:
+                  server: https://kubernetes.default.svc
+                  namespace: krateo-system
       patches:
         - fromFieldPath: "metadata.name"
-          toFieldPath: "metadata.name"
+          toFieldPath: "spec.forProvider.manifest.metadata.name"
           transforms:
             - type: string
               string:
@@ -445,7 +450,7 @@ spec:
             strategy: string
             string:
               fmt: "%s://%s/%s/%s"
-          toFieldPath: "spec.source.repoURL"
+          toFieldPath: "spec.forProvider.manifest.spec.source.repoURL"
     - base:
         apiVersion: kubernetes.crossplane.io/v1alpha1
         kind: Object
@@ -456,7 +461,6 @@ spec:
               kind: Deployment
               metadata:
               spec:
-                name: ${{ name }}
                 icon: "fa-brands fa-aws"
                 tags:
                   - aws
@@ -470,7 +474,6 @@ spec:
                     icon: "fa-brands fa-aws"
                 plugins:
                   - name: resources
-                owner: ${{ owner }}
       patches:
         - fromFieldPath: "spec.dashboard.description"
           toFieldPath: "spec.forProvider.manifest.spec.description"
