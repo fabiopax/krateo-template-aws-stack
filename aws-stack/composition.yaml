@@ -191,7 +191,7 @@ spec:
           toFieldPath: "spec.forProvider.scalingConfig.maxSize"
         - fromFieldPath: "spec.nodeGroup.scalingConfig.desiredSize"
           toFieldPath: "spec.forProvider.scalingConfig.desiredSize"
-        - fromFieldPath: "spec.nwtworkNameName"
+        - fromFieldPath: "spec.network.networkName"
           toFieldPath: "spec.forProvider.subnetRefs[0].name"
           transforms:
             - type: string
