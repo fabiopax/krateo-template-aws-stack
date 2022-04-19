@@ -164,7 +164,7 @@ spec:
                     name:
                       type: string
                     credentials:
-                      type: string #todo
+                      type: object #todo
                       properties:
                         source:
                           type: string
