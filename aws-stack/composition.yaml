@@ -289,7 +289,7 @@ spec:
           providerConfigRef:
             name: aws-stack-template-provider
       patches:
-        - fromFieldPath: "spec.eks.name"
+        - fromFieldPath: "spec.eks.clusterName"
           toFieldPath: "metadata.name"
           transforms:
             - type: string
@@ -310,7 +310,7 @@ spec:
             - type: string
               string:
                 fmt: "%s-controlplane"
-        - fromFieldPath: "spec.eks.name" #ex component id
+        - fromFieldPath: "spec.eks.clusterName" #ex component id
           toFieldPath: "spec.forProvider.roleNameRef.name"
           transforms:
             - type: string
