@@ -13,8 +13,8 @@ spec:
   network:
     networkName: test-aws-meetup-network
   rds:
-    rdsRegion: eu-central-1
-    rdsDataDiskSizeGb: '10'
-    rdsInstanceClass: db.t3.micro
-    rdsEngineVersion: '13.4'
-    rdsStorageType: standard
+    region: eu-central-1
+    dataDiskSizeGb: '10'
+    instanceClass: db.t3.micro
+    engineVersion: '13.4'
+    storageType: standard

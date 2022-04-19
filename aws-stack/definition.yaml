@@ -20,6 +20,8 @@ spec:
           properties:
             spec:
               properties:
+                name:
+                  type: string
                 eks:
                   type: object
                   properties:
