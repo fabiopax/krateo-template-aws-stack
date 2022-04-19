@@ -35,7 +35,7 @@ spec:
                         endpointPublicAccess:
                           type: boolean
                         subnetIdRefs:
-                          type: list
+                          type: object
                           properties:
                             name:
                               type: string
@@ -145,7 +145,7 @@ spec:
                         desiredSize:
                           type: number
                     instanceTypes:
-                      type: list
+                      type: object #todo array
                       properties:
                         instanceType:
                           type: string
