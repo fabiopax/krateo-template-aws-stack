@@ -15,6 +15,6 @@ spec:
   rds:
     region: eu-central-1
     dataDiskSizeGb: '10'
-    instanceClass: db.t3.micro
+    dbInstanceClass: db.t3.micro
     engineVersion: '13.4'
     storageType: standard
