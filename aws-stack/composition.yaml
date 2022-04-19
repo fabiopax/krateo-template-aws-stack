@@ -39,7 +39,7 @@ spec:
               string:
                 fmt: "%s-sn1"
         - fromFieldPath: "spec.name"
-          toFieldPath: "spec.forProvider.roleArnRef"
+          toFieldPath: "spec.forProvider.roleArnRef.name"
           transforms:
             - type: string
               string:

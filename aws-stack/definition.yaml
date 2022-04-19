@@ -41,7 +41,7 @@ spec:
                           properties:
                             name:
                               type: string
-                    roleArnRef:
+                    roleArnRef: #.name
                       type: string
                     writeConnectionSecretToRef:
                       type: object
