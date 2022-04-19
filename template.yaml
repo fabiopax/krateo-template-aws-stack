@@ -40,6 +40,7 @@ spec:
           title: Cluster Nodes
           description: The number of nodes in the cluster
           required: true
+          type: number
           default: 2
 
     - title: Database
@@ -68,6 +69,7 @@ spec:
           description: The size of the RDS disk
           required: true
           default: 10
+          type: number
         rdsRegion:
           title: Rds Region
           description: The region of the RDS

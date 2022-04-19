@@ -220,7 +220,7 @@ spec:
             secretRef:
               namespace: crossplane-system
               name: aws-creds
-              key: credentials
+              key: credentials #TODO mi manca la creazione di questo secret
     - base:
         apiVersion: database.aws.crossplane.io/v1beta1
         kind: RDSInstance
@@ -417,96 +417,53 @@ spec:
               string:
                 fmt: "%s-ng-noderole"
     - base:
-        apiVersion: kubernetes.crossplane.io/v1alpha1
-        kind: Object
+        apiVersion: helm.crossplane.io/v1beta1
+        kind: ProviderConfig
         spec:
-          forProvider:
-            manifest:
-              apiVersion: argoproj.io/v1alpha1
-              kind: Application
-              metadata:
-                namespace: krateo-system
-              spec:
-                project: default
-                source:
-                  targetRevision: HEAD
-                destination:
-                  server: https://kubernetes.default.svc
-                  namespace: krateo-system
+          credentials:
+            source: Secret
+            secretRef:
+              namespace: crossplane-system
+              key: credentials
       patches:
-        - fromFieldPath: "metadata.name"
-          toFieldPath: "spec.forProvider.manifest.metadata.name"
+        - fromFieldPath: metadata.name
+          toFieldPath: metadata.name
           transforms:
             - type: string
               string:
-                fmt: "%s-argocd-app"
-        - type: CombineToComposite
-          combine:
-            variables:
-              - fromFieldPath: "spec.toRepo.schema"
-              - fromFieldPath: "spec.toRepo.domain"
-              - fromFieldPath: "spec.toRepo.organizationName"
-              - fromFieldPath: "spec.toRepo.repositoryName"
-            strategy: string
-            string:
-              fmt: "%s://%s/%s/%s"
-          toFieldPath: "spec.forProvider.manifest.spec.source.repoURL"
-    - base:
-        apiVersion: kubernetes.crossplane.io/v1alpha1
-        kind: Object
-        spec:
-          forProvider:
-            manifest:
-              apiVersion: dashboard.krateo.io/v1alpha1
-              kind: Deployment
-              metadata:
-              spec:
-                icon: "fa-brands fa-aws"
-                tags:
-                  - aws
-                  - stack
-                  - infrastructure
-                  - rds
-                links:
-                  - icon: "fa-brands fa-git"
-                  - url: https://kiratech.awsapps.com/start#/
-                    title: AWS Console
-                    icon: "fa-brands fa-aws"
-                plugins:
-                  - name: resources
-      patches:
-        - fromFieldPath: "spec.dashboard.description"
-          toFieldPath: "spec.forProvider.manifest.spec.description"
+                fmt: "%s-provider-helm-providerconfig"
         - fromFieldPath: "spec.name"
-          toFieldPath: "spec.forProvider.manifest.spec.name"
-        - type: CombineToComposite
-          combine:
-            variables:
-              - fromFieldPath: "spec.toRepo.schema"
-              - fromFieldPath: "spec.toRepo.domain"
-              - fromFieldPath: "spec.toRepo.organizationName"
-              - fromFieldPath: "spec.toRepo.repositoryName"
-            strategy: string
-            string:
-              fmt: "%s://%s/%s/%s"
-          toFieldPath: "spec.forProvider.manifest.spec.links[0].url"
-        - type: CombineToComposite
-          combine:
-            variables:
-              - fromFieldPath: "spec.toRepo.organizationName"
-              - fromFieldPath: "spec.toRepo.repositoryName"
-            strategy: string
-            string:
-              fmt: "%s/%s"
-          toFieldPath: "spec.forProvider.manifest.spec.links[0].title"
-        - type: CombineToComposite
-          combine:
-            variables:
-              - fromFieldPath: "spec.toRepo.organizationName"
-              - fromFieldPath: "spec.toRepo.repositoryName"
-            strategy: string
-            string:
-              fmt: "%s/%s"
-          toFieldPath: "spec.forProvider.manifest.spec.plugins[0].value"
-        - fromFieldPath: "spec.dashboard.owner"
-          toFieldPath: "spec.forProvider.manifest.spec.owner"
+          toFieldPath: "spec.credentials.secretRef.name"
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-eks-kubeconfig"
+      readinessChecks:
+        - type: None
+    - base:
+        apiVersion: helm.crossplane.io/v1beta1
+        kind: Release
+        spec:
+          providerConfigRef:
+          forProvider:
+            chart:
+              name: sysdig
+              repository: https://charts.sysdig.com
+              #version: 3.26.5
+            namespace: krateo-system
+      patches:
+        - fromFieldPath: metadata.name
+          toFieldPath: spec.providerConfigRef.name
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-helm-providerconfig"
+        - fromFieldPath: metadata.name
+          toFieldPath: metadata.name
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-release-sysdig"
+
+
+

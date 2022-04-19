@@ -4,50 +4,17 @@ kind: aws-stack
 metadata:
   name: aws-stack
 spec:
-  dashboard:
-    description: ${{ description }}
-    icon: "fa-brands fa-aws"
-    tags:
-      - aws
-      - stack
-      - infrastructure
-      - rds
-    links:
-      - url: https://${{ provider }}/${{ organizationName }}/${{ repositoryName }}
-        title: ${{ organizationName }}/${{ repositoryName }}
-        icon: "fa-brands fa-git"
-      - url: https://kiratech.awsapps.com/start#/
-        title: AWS Console
-        icon: "fa-brands fa-aws"
-    plugins:
-      - name: resources
-        value: ${{ organizationName }}-${{ repositoryName }}
-    owner: ${{ owner }}
-  name: "${{ name }}"
   compositionSelector:
     matchLabels:
       platform: aws
+  name: test-aws-meetup
   eks:
-    clusterName: "${{ clusterName }}"
+    clusterName: test-aws-meetup-eks
   network:
-    networkName: "${{ network }}"
+    networkName: test-aws-meetup-network
   rds:
-    rdsRegion: "${{ rdsRegion }}"
-    rdsDataDiskSizeGb: "${{ rdsDataDiskSizeGb }}"
-    rdsInstanceClass: "${{ rdsInstanceClass }}"
-    rdsEngineVersion: "${{ rdsEngineVersion }}"
-    rdsStorageType: "${{ rdsStorageType }}"
-  fromRepo:
-    domain: github.com
-    provider: github
-    apiUrl: https://api.github.com/
-    repositoryName: krateo-template-aws-stack
-    organizationName: krateoplatformops
-    schema: https
-  toRepo:
-    domain: "${{ domain }}"
-    provider: "${{ provider }}"
-    apiUrl: "${{ apiUrl }}"
-    repositoryName: "${{ repositoryName }}"
-    organizationName: "${{ organizationName }}"
-    schema: ${{ schema }} #it's the protocol for the url
+    rdsRegion: eu-central-1
+    rdsDataDiskSizeGb: '10'
+    rdsInstanceClass: db.t3.micro
+    rdsEngineVersion: '13.4'
+    rdsStorageType: standard
