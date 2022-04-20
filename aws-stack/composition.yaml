@@ -21,7 +21,7 @@ spec:
               endpointPublicAccess: true
             writeConnectionSecretToRef:
               namespace: crossplane-system
-            providerConfigRef:
+          providerConfigRef:
               name: aws-stack-template-provider
       patches:
         - fromFieldPath: "spec.eks.clusterName"
@@ -39,7 +39,7 @@ spec:
               string:
                 fmt: "%s-sn1"
         - fromFieldPath: "spec.eks.clusterName" #ex component id
-          toFieldPath: "spec.forProvider.roleNameRef.name"
+          toFieldPath: "spec.forProvider.roleArnRef.name"
         - fromFieldPath: "spec.name"
           toFieldPath: "spec.forProvider.writeConnectionSecretToRef.name"
           transforms:
