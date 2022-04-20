@@ -444,7 +444,6 @@ spec:
         apiVersion: helm.crossplane.io/v1beta1
         kind: Release
         spec:
-          providerConfigRef:
           forProvider:
             chart:
               name: sysdig
@@ -457,7 +456,7 @@ spec:
           transforms:
             - type: string
               string:
-                fmt: "%s-helm-providerconfig"
+                fmt: "%s-provider-helm-providerconfig"
         - fromFieldPath: metadata.name
           toFieldPath: metadata.name
           transforms:
