@@ -43,7 +43,7 @@ spec:
           transforms:
             - type: string
               string:
-                fmt: "%s-controlplane"
+                fmt: "%s-eks-controlplane"
         - fromFieldPath: "spec.name"
           toFieldPath: "spec.forProvider.writeConnectionSecretToRef.name"
           transforms:
