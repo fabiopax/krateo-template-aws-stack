@@ -38,9 +38,13 @@ spec:
             - type: string
               string:
                 fmt: "%s-sn1"
-        - fromFieldPath: "spec.eks.clusterName" #ex component id
+        - fromFieldPath: "spec.eks.clusterName"
           toFieldPath: "spec.forProvider.roleArnRef.name"
-        - fromFieldPath: "spec.name"
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-controlplane"  
+        - fromFieldPath: "spec.eks.clusterName"
           toFieldPath: "spec.forProvider.writeConnectionSecretToRef.name"
           transforms:
             - type: string
@@ -290,7 +294,7 @@ spec:
           transforms:
             - type: string
               string:
-                fmt: "%s-controlplane"
+                fmt: "%s-controlplane"        
     - base:
         apiVersion: iam.aws.crossplane.io/v1beta1
         kind: RolePolicyAttachment
@@ -428,7 +432,7 @@ spec:
             - type: string
               string:
                 fmt: "%s-provider-helm-providerconfig"
-        - fromFieldPath: "spec.name"
+        - fromFieldPath: "spec.eks.clusterName"
           toFieldPath: "spec.credentials.secretRef.name"
           transforms:
             - type: string
@@ -459,6 +463,3 @@ spec:
             - type: string
               string:
                 fmt: "%s-release-sysdig"
-
-
-
