@@ -20,7 +20,7 @@ spec:
               endpointPrivateAccess: true
               endpointPublicAccess: true
             writeConnectionSecretToRef:
-              namesapce: crossplane-system
+              namespace: crossplane-system
             providerConfigRef:
               name: aws-stack-template-provider
       patches:
@@ -38,12 +38,8 @@ spec:
             - type: string
               string:
                 fmt: "%s-sn1"
-        - fromFieldPath: "spec.name"
-          toFieldPath: "spec.forProvider.roleArnRef.name"
-          transforms:
-            - type: string
-              string:
-                fmt: "%s-eks-controlplane"
+        - fromFieldPath: "spec.eks.clusterName" #ex component id
+          toFieldPath: "spec.forProvider.roleNameRef.name"
         - fromFieldPath: "spec.name"
           toFieldPath: "spec.forProvider.writeConnectionSecretToRef.name"
           transforms:
@@ -342,7 +338,7 @@ spec:
             name: aws-stack-template-provider
       patches:
         - fromFieldPath: "spec.eks.clusterName"
-          toFieldPath: "memetadata.name"
+          toFieldPath: "metadata.name"
           transforms:
             - type: string
               string:
