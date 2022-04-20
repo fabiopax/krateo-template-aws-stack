@@ -220,7 +220,7 @@ spec:
             secretRef:
               namespace: crossplane-system
               name: aws-creds
-              key: credentials #TODO mi manca la creazione di questo secret
+              key: credentials
     - base:
         apiVersion: database.aws.crossplane.io/v1beta1
         kind: RDSInstance
@@ -452,7 +452,7 @@ spec:
             namespace: krateo-system
       patches:
         - fromFieldPath: metadata.name
-          toFieldPath: spec.providerConfigRef.name
+          toFieldPath: "spec.providerConfigRef.name"
           transforms:
             - type: string
               string:
