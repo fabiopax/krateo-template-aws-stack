@@ -45,7 +45,7 @@ spec:
               string:
                 fmt: "%s-controlplane"
         - fromFieldPath: "spec.eks.clusterName"
-          toFieldPath: "spec.forProvider.writeConnectionSecretToRef.name"
+          toFieldPath: "spec.writeConnectionSecretToRef.name"
           transforms:
             - type: string
               string:
