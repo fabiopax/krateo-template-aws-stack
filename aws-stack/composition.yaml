@@ -19,7 +19,7 @@ spec:
             resourcesVpcConfig:
               endpointPrivateAccess: true
               endpointPublicAccess: true
-            writeConnectionSecretToRef:
+          writeConnectionSecretToRef:
               namespace: crossplane-system
           providerConfigRef:
               name: aws-stack-template-provider
@@ -40,8 +40,8 @@ spec:
                 fmt: "%s-sn1"
         - fromFieldPath: "spec.eks.clusterName" #ex component id
           toFieldPath: "spec.forProvider.roleArnRef.name"
-        - fromFieldPath: "spec.name"
-          toFieldPath: "spec.forProvider.writeConnectionSecretToRef.name"
+        - fromFieldPath: "spec.eks.clusterName"
+          toFieldPath: "spec.writeConnectionSecretToRef.name"
           transforms:
             - type: string
               string:
@@ -428,7 +428,7 @@ spec:
             - type: string
               string:
                 fmt: "%s-provider-helm-providerconfig"
-        - fromFieldPath: "spec.name"
+        - fromFieldPath: "spec.eks.clusterName"
           toFieldPath: "spec.credentials.secretRef.name"
           transforms:
             - type: string
