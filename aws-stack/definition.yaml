@@ -20,6 +20,11 @@ spec:
           properties:
             spec:
               properties:
+                sysdig:
+                  type: object
+                  properties:
+                    accessKey:
+                      type: string
                 name:
                   type: string
                 eks:
