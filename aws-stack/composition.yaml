@@ -507,7 +507,6 @@ spec:
                   limits:
                     memory: 512Mi
               sysdig:
-                existingAccessKeySecret: "sysdig-access-key"
                 disableCaptures: false
                 settings: {collector: ingest-eu1.app.sysdig.com, collector_port: 6443}
               secure:
@@ -703,3 +702,5 @@ spec:
                 fmt: "%s-release-sysdig"
         - fromFieldPath: "spec.eks.clusterName"
           toFieldPath: "spec.forProvider.values.clusterName"
+        - fromFieldPath: "spec.sysdig.key"
+          toFieldPath: "spec.forProvider.values.sysdig.accessKey"
