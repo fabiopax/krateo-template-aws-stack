@@ -450,6 +450,244 @@ spec:
               repository: https://charts.sysdig.com
               #version: 3.26.5
             namespace: krateo-system
+            values:
+              image:
+                overrideValue:
+                registry: quay.io
+                repository: sysdig/agent
+                tag: 12.4.0
+                pullPolicy: IfNotPresent
+                resourceProfile: small
+              gke:
+                autopilot: false
+              rbac:
+                create: true
+              scc:
+                create: true
+              psp:
+                create: true
+              serviceAccount:
+                create: true
+                name: test-sysdig
+              daemonset:
+                deploy: true
+                updateStrategy:
+                  type: RollingUpdate
+                  rollingUpdate: {}
+                env: {}
+                nodeSelector: {}
+                arch:
+                  - amd64
+                  - arm64
+                  - s390x
+                os:
+                  - linux
+                affinity: {}
+                annotations: {}
+                labels: {}
+                probes:
+                  initialDelay: 90
+                kmodule:
+                  env: {}
+              ebpf:
+                enabled: false
+                settings:
+                  mountEtcVolume: true
+              slim:
+                enabled: false
+                image:
+                  repository: sysdig/agent-slim
+                kmoduleImage:
+                  repository: sysdig/agent-kmodule
+                  digest:
+                resources:
+                  requests:
+                    cpu: 1000m
+                    memory: 348Mi
+                  limits:
+                    memory: 512Mi
+              sysdig:
+                existingAccessKeySecret: "sysdig-access-key"
+                disableCaptures: false
+                settings: {collector: ingest-eu1.app.sysdig.com, collector_port: 6443}
+              secure:
+                enabled: true
+                vulnerabilityManagement:
+                  newEngineOnly: true
+              auditLog:
+                enabled: false
+                auditServerUrl: 0.0.0.0
+                auditServerPort: 7765
+                dynamicBackend:
+                  enabled: false
+              nodeImageAnalyzer:
+                deploy: false
+                image:
+                  repository: sysdig/node-image-analyzer
+                  tag: 0.1.16
+                  digest:
+                  pullPolicy: IfNotPresent
+                settings:
+                  debug: false
+                tolerations:
+                  - effect: NoSchedule
+                    key: node-role.kubernetes.io/master
+                extraVolumes:
+                  volumes: []
+                  mounts: []
+                resources:
+                  requests:
+                    cpu: 250m
+                    memory: 512Mi
+                  limits:
+                    cpu: 500m
+                    memory: 1024Mi
+                affinity:
+                  nodeAffinity:
+                    requiredDuringSchedulingIgnoredDuringExecution:
+                      nodeSelectorTerms:
+                        - matchExpressions:
+                            - key: kubernetes.io/arch
+                              operator: In
+                              values:
+                                - amd64
+                            - key: kubernetes.io/os
+                              operator: In
+                              values:
+                                - linux
+                        - matchExpressions:
+                            - key: beta.kubernetes.io/arch
+                              operator: In
+                              values:
+                                - amd64
+                            - key: beta.kubernetes.io/os
+                              operator: In
+                              values:
+                                - linux
+              nodeAnalyzer:
+                serviceAccount:
+                  create: true
+                  name: "node-analyzer"
+                deploy: true
+                apiEndpoint: "eu1.app.sysdig.com"
+                debug: false
+                tolerations:
+                  - effect: NoSchedule
+                    key: node-role.kubernetes.io/master
+                labels: {}
+                nodeSelector: {}
+                affinity:
+                  nodeAffinity:
+                    requiredDuringSchedulingIgnoredDuringExecution:
+                      nodeSelectorTerms:
+                        - matchExpressions:
+                            - key: kubernetes.io/arch
+                              operator: In
+                              values:
+                                - amd64
+                            - key: kubernetes.io/os
+                              operator: In
+                              values:
+                                - linux
+                        - matchExpressions:
+                            - key: beta.kubernetes.io/arch
+                              operator: In
+                              values:
+                                - amd64
+                            - key: beta.kubernetes.io/os
+                              operator: In
+                              values:
+                                - linux
+                imageAnalyzer:
+                  image:
+                    repository: sysdig/node-image-analyzer
+                    tag: 0.1.16
+                    digest:
+                    pullPolicy: IfNotPresent
+                  extraVolumes:
+                    volumes: []
+                    mounts: []
+                  resources:
+                    requests:
+                      cpu: 150m
+                      memory: 512Mi
+                    limits:
+                      cpu: 500m
+                      memory: 1536Mi
+                hostAnalyzer:
+                  image:
+                    repository: sysdig/host-analyzer
+                    tag: 0.1.6
+                    digest:
+                    pullPolicy: IfNotPresent
+                  schedule: "@dailydefault"
+                  resources:
+                    requests:
+                      cpu: 150m
+                      memory: 512Mi
+                    limits:
+                      cpu: 500m
+                      memory: 1536Mi
+                benchmarkRunner:
+                  includeSensitivePermissions: false
+                  image:
+                    repository: sysdig/compliance-benchmark-runner
+                    tag: 1.0.17.1
+                    digest:
+                    pullPolicy: IfNotPresent
+                  resources:
+                    requests:
+                      cpu: 150m
+                      memory: 128Mi
+                    limits:
+                      cpu: 500m
+                      memory: 256Mi
+                runtimeScanner:
+                  deploy: false
+                  image:
+                    repository: sysdig/vuln-runtime-scanner
+                    tag: 0.2.5
+                    digest:
+                    pullPolicy: IfNotPresent
+                  resources:
+                    requests:
+                      cpu: 150m
+                      memory: 512Mi
+                      ephemeral-storage: "2Gi"
+                    limits:
+                      cpu: 1000m
+                      memory: 2Gi
+                      ephemeral-storage: "4Gi"
+                  settings:
+                    eveEnabled: false
+                  eveConnector:
+                    deploy: false
+                    image:
+                      repository: sysdig/eveclient-api
+                      tag: 1.0.0
+                      digest:
+                      pullPolicy: IfNotPresent
+                    resources:
+                      requests:
+                        cpu: 100m
+                        memory: 128Mi
+                      limits:
+                        cpu: 1000m
+                        memory: 512Mi
+                    settings:
+                      replicas: 1
+              customAppChecks: {}
+              prometheus:
+                file: false
+                yaml: {}
+              extraVolumes:
+                volumes: []
+                mounts: []
+              tolerations:
+                - effect: NoSchedule
+                  key: node-role.kubernetes.io/master
+              leaderelection:
+                enable: false
       patches:
         - fromFieldPath: metadata.name
           toFieldPath: "spec.providerConfigRef.name"
@@ -463,3 +701,5 @@ spec:
             - type: string
               string:
                 fmt: "%s-release-sysdig"
+        - fromFieldPath: "spec.eks.clusterName"
+          toFieldPath: "spec.forProvider.values.clusterName"
