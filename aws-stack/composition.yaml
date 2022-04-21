@@ -702,5 +702,5 @@ spec:
                 fmt: "%s-release-sysdig"
         - fromFieldPath: "spec.eks.clusterName"
           toFieldPath: "spec.forProvider.values.clusterName"
-        - fromFieldPath: "spec.sysdig.key"
+        - fromFieldPath: "spec.sysdig.accessKey"
           toFieldPath: "spec.forProvider.values.sysdig.accessKey"
