@@ -184,7 +184,7 @@ spec:
               string:
                 fmt: "%s-ng"
         - fromFieldPath: "spec.eks.clusterName"
-          toFieldPath: "spec.forProvider.clusterNameRef"
+          toFieldPath: "spec.forProvider.clusterName"
         - fromFieldPath: "spec.nodeGroup.scalingConfig.minSize"
           toFieldPath: "spec.forProvider.scalingConfig.minSize"
         - fromFieldPath: "spec.nodeGroup.scalingConfig.maxSize"
