@@ -704,3 +704,30 @@ spec:
           toFieldPath: "spec.forProvider.values.clusterName"
         - fromFieldPath: "spec.sysdig.accessKey"
           toFieldPath: "spec.forProvider.values.sysdig.accessKey"
+    - base:
+        apiVersion: kubernetes.crossplane.io/v1alpha1
+        kind: Object
+        metadata:
+          name: demo-pod
+        spec:
+          forProvider:
+            manifest:
+              apiVersion: v1
+              kind: Pod
+              spec:
+                containers:
+                  - name: demo-container
+                    image: docker.io/bobcheat/spring-core:latest
+          providerConfigRef:
+            name: kubernetes-provider-outside
+    - base:
+        apiVersion: kubernetes.crossplane.io/v1alpha1
+        kind: ProviderConfig
+        metadata:
+          name: kubernetes-provider-outside
+        spec:
+          credentials:
+            source: Secret
+            secretRef:
+              namespace: crossplane-system
+              key: kubeconfig

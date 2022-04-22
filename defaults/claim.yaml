@@ -8,6 +8,8 @@ spec:
     matchLabels:
       platform: aws
   name: test-aws-meetup
+  sysdig:
+    accessKey: "13654062-7ef7-4b5f-a28f-fc47dd8c737a"
   eks:
     clusterName: test-aws-meetup-eks
   network:
