@@ -2,21 +2,21 @@
 apiVersion: templates.krateo.io/v1alpha1
 kind: aws-stack
 metadata:
-  name: aws-stack
+  name: "${{ name }}"
 spec:
   compositionSelector:
     matchLabels:
       platform: aws
-  name: test-aws-meetup
+  name: "${{ name }}"
   sysdig:
     accessKey: "13654062-7ef7-4b5f-a28f-fc47dd8c737a"
   eks:
-    clusterName: test-aws-meetup-eks
+    clusterName: ${{ clusterName }}"
   network:
-    networkName: test-aws-meetup-network
+    networkName: "${{ networkName }}"
   rds:
-    region: eu-central-1
-    allocatedStorage: 10 #ex dataDiskSizeGb
-    dbInstanceClass: db.t3.micro
-    engineVersion: '13.4'
-    storageType: standard
+    region: "${{ rdsRegion }}"
+    allocatedStorage: "${{ rdsDataDiskSizeGb }}"
+    dbInstanceClass: "${{ rdsInstanceClass }}"
+    engineVersion: "${{ rdsEngineVersion }}"
+    storageType: "${{ rdsStorageType }}"
