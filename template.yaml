@@ -1,102 +1,156 @@
-apiVersion: krateo.io/v1alpha1
+apiVersion: backstage.io/v1beta2
 kind: Template
 metadata:
-  name: aws-stack-template
-  annotations:
-    title: AWS Stack template
-    description: Krateo Template Sample aws stack
-    icon: fa-brands fa-aws
-    owner: mauro.sala@kiratech.it
-  labels:
-    tags:
-      - aws
-      - eks
-      - rds
-      - stack
+  name: aws-template
+  title: Amazon Web Services infrastructure template
+  description: Create a simple AWS stack
+  tags:
+    - aws
+    - eks
+    - rds
+    - sysdig
 spec:
-  widgets:
-    - title: Name and description
+  owner: diego.braga@kiratech.it
+  type: service
+
+  # these are the steps which are rendered in the frontend with the form input
+  parameters:
+    - title: AWS stack values
+      required:
+        - name
+        - description
+        - clusterName
+        - networkName
+        - clusterNodes
+        - rdsName
+        - rdsRegion
+        - rdsDataDiskSizeGb
+        - rdsInstanceClass
+        - rdsEngineVersion
+        - rdsStorageType
+        - owner
       properties:
         name:
           title: Name
+          type: string
           description: Unique name of the component
-          required: true
         description:
           title: Description
+          type: string
           description: Help others understand what this service does.
-          required: true
-
-    - title: Kubernetes
-      properties:
         clusterName:
-          title: Cluster Name
-          description: The name of the cluster
-          required: true
-        network:
-          title: Network name
-          description: The VPC network to use
-          required: true
+          title: Cluster identifier
+          type: string
+          description: Cluster identifier
+        networkName:
+          title: Network identifier
+          type: string
+          description: Network identifier
         clusterNodes:
-          title: Cluster Nodes
-          description: The number of nodes in the cluster
-          required: true
-          type: number
+          title: Number of nodes of the cluster per region
+          type: integer
+          description: Number of nodes of the cluster per region
           default: 2
-
-    - title: Database
-      properties:
         rdsName:
-          title: Rds Name
-          description: The name of the RDS
-          required: true
-        rdsInstanceClass:
-          title: Rds Instance Class
-          description: The instance class of the RDS
-          required: true
-          default: db.t3.micro
-        rdsEngine:
-          title: Rds Engine
-          description: The engine of the RDS
-          required: true
-          default: postgres
-        rdsEngineVersion:
-          title: Rds Engine Version
-          description: The engine version of the RDS
-          required: true
-          default: 13.4
-        rdsDataDiskSizeGb:
-          title: Rds Disk Size
-          description: The size of the RDS disk
-          required: true
-          default: 10
-          type: number
+          title: RDS identifier
+          type: string
+          description: RDS identifier
         rdsRegion:
-          title: Rds Region
-          description: The region of the RDS
-          required: true
+          title: RDS region
+          type: string
+          description: RDS region
           default: eu-central-1
+        rdsDataDiskSizeGb:
+          title: RDS disk size (GB)
+          type: integer
+          description: RDS data disk size (GB)
+          default: 10
+        rdsInstanceClass:
+          title: RDS instance class
+          type: string
+          description: Cloud SQL tier
+          default: db.t3.micro
+        rdsEngineVersion:
+          title: Cloud SQL Database version
+          type: string
+          description: Cloud SQL Database version
+          default: "13.4"
         rdsStorageType:
-          title: Rds Storage Type
-          description: The storage type of the RDS
-          required: true
+          title: Cloud SQL data disk type
+          type: string
+          description: Cloud SQL data disk type
           default: standard
+        owner:
+          title: Owner
+          type: string
+          description: Owner of the component
+          ui:field: OwnerPicker
+          ui:options:
+            allowedKinds:
+              - Group
 
-    - title: Git repository destination
+    - title: Choose a location
+      required:
+        - repoUrl
       properties:
-        provider:
-          title: Git Provider
-          description: gitgub.com / gitlab.com / bitbucket.org
-          required: true
-          default: github.com
-          values:
-            - bitbucket.org
-            - github.com
-            - gitlab.com
-        organizationName:
-          title: Repository Organization
-          required: true
-          description: Organization name
-        repositoryName:
-          title: Repository Name
-          required: true
-          description: The name of the repository
+        repoUrl:
+          title: Repository Location
+          type: string
+          ui:field: RepoUrlPicker
+          ui:options:
+            allowedHosts:
+              - github.com
+
+  # here's the steps that are executed in series in the scaffolder backend
+  steps:
+    - id: template
+      name: Fetch Skeleton + Template
+      action: fetch:template
+      input:
+        url: ./defaults
+        values:
+          name: "{{ parameters.name }}"
+          description: "{{ parameters.description }}"
+          networkName: "{{ parameters.networkName }}"
+          clusterName: "{{ parameters.clusterName }}"
+          clusterNodes: "{{ parameters.clusterNodes }}"
+          rdsName: "{{ parameters.rdsName }}"
+          rdsRegion: "{{ parameters.rdsRegion }}"
+          rdsDataDiskSizeGb: "{{ parameters.rdsDataDiskSizeGb }}"
+          rdsInstanceClass: "{{ parameters.rdsInstanceClass }}"
+          rdsEngineVersion: "{{ parameters.rdsEngineVersion }}"
+          rdsStorageType: "{{ parameters.rdsStorageType }}"
+          owner: "{{ parameters.owner }}"
+          destination: "{{ parseRepoUrl parameters.repoUrl }}"
+
+    - id: publish
+      name: Publish
+      action: publish:github
+      input:
+        allowedHosts: ["github.com"]
+        description: "This is a AWS stack with name {{ parameters.component_id }}"
+        repoUrl: "{{ parameters.repoUrl }}"
+        repoVisibility: public
+
+    - id: register
+      name: Register
+      action: catalog:register
+      input:
+        repoContentsUrl: "{{ steps.publish.output.repoContentsUrl }}"
+        catalogInfoPath: "/catalog-info.yaml"
+
+    - id: argocd
+      name: Create application on ArgoCD
+      action: kerberus:argocd
+      input:
+        host: ${{parameters.repoUrl}}
+
+    - id: githubprotection
+      name: Set GitHub branch protection
+      action: kerberus:githubprotection
+      input:
+        host: ${{parameters.repoUrl}}
+
+  output:
+    remoteUrl: "{{ steps.publish.output.remoteUrl }}"
+    entityRef: "{{ steps.register.output.entityRef }}"
