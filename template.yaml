@@ -109,34 +109,34 @@ spec:
       input:
         url: ./defaults
         values:
-          name: "{{ parameters.name }}"
-          description: "{{ parameters.description }}"
-          networkName: "{{ parameters.networkName }}"
-          clusterName: "{{ parameters.clusterName }}"
-          clusterNodes: "{{ parameters.clusterNodes }}"
-          rdsName: "{{ parameters.rdsName }}"
-          rdsRegion: "{{ parameters.rdsRegion }}"
-          rdsDataDiskSizeGb: "{{ parameters.rdsDataDiskSizeGb }}"
-          rdsInstanceClass: "{{ parameters.rdsInstanceClass }}"
-          rdsEngineVersion: "{{ parameters.rdsEngineVersion }}"
-          rdsStorageType: "{{ parameters.rdsStorageType }}"
-          owner: "{{ parameters.owner }}"
-          destination: "{{ parseRepoUrl parameters.repoUrl }}"
+          name: "${{ parameters.name }}"
+          description: "${{ parameters.description }}"
+          networkName: "${{ parameters.networkName }}"
+          clusterName: "${{ parameters.clusterName }}"
+          clusterNodes: "${{ parameters.clusterNodes }}"
+          rdsName: "${{ parameters.rdsName }}"
+          rdsRegion: "${{ parameters.rdsRegion }}"
+          rdsDataDiskSizeGb: "${{ parameters.rdsDataDiskSizeGb }}"
+          rdsInstanceClass: "${{ parameters.rdsInstanceClass }}"
+          rdsEngineVersion: "${{ parameters.rdsEngineVersion }}"
+          rdsStorageType: "${{ parameters.rdsStorageType }}"
+          owner: "${{ parameters.owner }}"
+          destination: "${{ parseRepoUrl parameters.repoUrl }}"
 
     - id: publish
       name: Publish
       action: publish:github
       input:
         allowedHosts: ["github.com"]
-        description: "This is a AWS stack with name {{ parameters.component_id }}"
-        repoUrl: "{{ parameters.repoUrl }}"
+        description: "This is a AWS stack with name ${{ parameters.component_id }}"
+        repoUrl: "${{ parameters.repoUrl }}"
         repoVisibility: public
 
     - id: register
       name: Register
       action: catalog:register
       input:
-        repoContentsUrl: "{{ steps.publish.output.repoContentsUrl }}"
+        repoContentsUrl: "${{ steps.publish.output.repoContentsUrl }}"
         catalogInfoPath: "/catalog-info.yaml"
 
     - id: argocd
