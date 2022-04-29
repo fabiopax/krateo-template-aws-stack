@@ -85,7 +85,7 @@ spec:
       properties:
         provider:
           title: Git Provider
-          description: gitgub.com / gitlab.com / bitbucket.org
+          description: github.com / gitlab.com / bitbucket.org
           required: true
           default: github.com
           values:
