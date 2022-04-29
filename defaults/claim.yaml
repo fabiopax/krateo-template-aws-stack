@@ -22,6 +22,8 @@ spec:
     plugins:
       - name: resources
         value: ${{ organizationName }}-${{ repositoryName }}
+        type: argocd
+        icon: fa-solid fa-cookie
     owner: ${{ owner }}
   name: "${{ name }}"
   compositionSelector:
