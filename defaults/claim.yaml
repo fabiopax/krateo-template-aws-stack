@@ -3,6 +3,7 @@ apiVersion: templates.krateo.io/v1alpha1
 kind: aws-stack
 metadata:
   name: aws-stack
+  deploymentId: ${{ deploymentId }}
 spec:
   dashboard:
     description: ${{ description }}
