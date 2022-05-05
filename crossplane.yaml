@@ -25,4 +25,4 @@ spec:
     - provider: "xpkg.upbound.io/crossplane/provider-aws"
       version: ">=v0.24.0"
     - provider: "ghcr.io/krateoplatformops/krateo-module-core"
-      version: ">=v0.1.0"
+      version: ">=v0.1.0-298"
