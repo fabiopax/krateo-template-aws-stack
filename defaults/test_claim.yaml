@@ -1,0 +1,20 @@
+---
+apiVersion: templates.krateo.io/v1alpha1
+kind: aws-stack
+metadata:
+  name: aws-stack
+spec:
+  compositionSelector:
+    matchLabels:
+      platform: aws
+  name: test-aws-meetup
+  eks:
+    clusterName: test-aws-meetup-eks
+  network:
+    networkName: test-aws-meetup-network
+  rds:
+    region: eu-central-1
+    allocatedStorage: 10 #ex dataDiskSizeGb
+    dbInstanceClass: db.t3.micro
+    engineVersion: '13.4'
+    storageType: standard
