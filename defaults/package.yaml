@@ -3,7 +3,7 @@ kind: Configuration
 metadata:
   name: krateo-template-aws-stack
 spec:
-  package: ghcr.io/krateoplatformops/krateo-template-aws-stack:meetup
+  package: ghcr.io/krateoplatformops/krateo-template-aws-stack:latest
   packagePullPolicy: Always
   revisionActivationPolicy: Automatic
   revisionHistoryLimit: 1
