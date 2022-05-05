@@ -20,10 +20,17 @@ spec:
           properties:
             spec:
               properties:
+                sysdig:
+                  type: object
+                  properties:
+                    accessKey:
+                      type: string
+                name:
+                  type: string
                 eks:
                   type: object
                   properties:
-                    name: #ex cluster ref
+                    clusterName: #ex cluster ref
                       type: string
                     region:
                       type: string
@@ -35,11 +42,11 @@ spec:
                         endpointPublicAccess:
                           type: boolean
                         subnetIdRefs:
-                          type: list
+                          type: object
                           properties:
                             name:
                               type: string
-                    roleArnRef:
+                    roleArnRef: #.name
                       type: string
                     writeConnectionSecretToRef:
                       type: object
@@ -51,7 +58,7 @@ spec:
                 network:
                   type: object
                   properties:
-                    name:
+                    networkName:
                       type: string
                     vpc:
                       type: object
@@ -145,7 +152,7 @@ spec:
                         desiredSize:
                           type: number
                     instanceTypes:
-                      type: list
+                      type: object #todo array
                       properties:
                         instanceType:
                           type: string
@@ -153,7 +160,7 @@ spec:
                       type: object
                       properties:
                         name:
-                          type: strings
+                          type: string
                     nodeRoleRef: #.name
                       type: string
                     providerConfigRef: #.name
@@ -164,19 +171,19 @@ spec:
                     name:
                       type: string
                     credentials:
-                      type: object
+                      type: object #todo
                       properties:
                         source:
                           type: string
                         secretRef:
                           type: object
-                        properties:
-                          name:
-                            type: string
-                          namespace:
-                            type: string
-                          key:
-                            type: string
+                          properties:
+                            name:
+                              type: string
+                            namespace:
+                              type: string
+                            key:
+                              type: string
                 rds:
                   type: object
                   properties:
@@ -276,18 +283,20 @@ spec:
                     schema: 
                       type: string
                 toRepo:
-                  domain: 
-                    type: string
-                  provider:
-                    type: string
-                  apiUrl: 
-                    type: string
-                  repositoryName:
-                    type: string
-                  organizationName:
-                    type: string
-                  schema:
-                    type: string
+                  type: object
+                  properties:
+                      domain:
+                        type: string
+                      provider:
+                        type: string
+                      apiUrl:
+                        type: string
+                      repositoryName:
+                        type: string
+                      organizationName:
+                        type: string
+                      schema:
+                        type: string
                 dashboard:
                   type: object
                   properties:

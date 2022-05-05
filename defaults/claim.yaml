@@ -26,30 +26,13 @@ spec:
         icon: fa-solid fa-cookie
     owner: ${{ owner }}
   name: "${{ name }}"
-  compositionSelector:
-    matchLabels:
-      platform: aws
   eks:
-    clusterName: "${{ clusterName }}"
+    clusterName: ${{ clusterName }}"
   network:
-    networkName: "${{ network }}"
+    networkName: "${{ networkName }}"
   rds:
-    rdsRegion: "${{ rdsRegion }}"
-    rdsDataDiskSizeGb: "${{ rdsDataDiskSizeGb }}"
-    rdsInstanceClass: "${{ rdsInstanceClass }}"
-    rdsEngineVersion: "${{ rdsEngineVersion }}"
-    rdsStorageType: "${{ rdsStorageType }}"
-  fromRepo:
-    domain: github.com
-    provider: github
-    apiUrl: https://api.github.com/
-    repositoryName: krateo-template-aws-stack
-    organizationName: krateoplatformops
-    schema: https
-  toRepo:
-    domain: "${{ domain }}"
-    provider: "${{ provider }}"
-    apiUrl: "${{ apiUrl }}"
-    repositoryName: "${{ repositoryName }}"
-    organizationName: "${{ organizationName }}"
-    schema: ${{ schema }} #it's the protocol for the url
+    region: "${{ rdsRegion }}"
+    allocatedStorage: "${{ rdsDataDiskSizeGb }}"
+    dbInstanceClass: "${{ rdsInstanceClass }}"
+    engineVersion: "${{ rdsEngineVersion }}"
+    storageType: "${{ rdsStorageType }}"

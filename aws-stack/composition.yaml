@@ -19,9 +19,9 @@ spec:
             resourcesVpcConfig:
               endpointPrivateAccess: true
               endpointPublicAccess: true
-            writeConnectionSecretToRef:
-              namesapce: crossplane-system
-            providerConfigRef:
+          writeConnectionSecretToRef:
+              namespace: crossplane-system
+          providerConfigRef:
               name: aws-stack-template-provider
       patches:
         - fromFieldPath: "spec.eks.clusterName"
@@ -38,14 +38,14 @@ spec:
             - type: string
               string:
                 fmt: "%s-sn1"
-        - fromFieldPath: "spec.name"
-          toFieldPath: "spec.forProvider.roleArnRef"
+        - fromFieldPath: "spec.eks.clusterName"
+          toFieldPath: "spec.forProvider.roleArnRef.name"
           transforms:
             - type: string
               string:
                 fmt: "%s-controlplane"
-        - fromFieldPath: "spec.name"
-          toFieldPath: "spec.forProvider.writeConnectionSecretToRef.name"
+        - fromFieldPath: "spec.eks.clusterName"
+          toFieldPath: "spec.writeConnectionSecretToRef.name"
           transforms:
             - type: string
               string:
@@ -149,19 +149,19 @@ spec:
         - fromFieldPath: "spec.network.networkName"
           toFieldPath: "spec.forProvider.vpcIdRef.name"
         - fromFieldPath: "spec.network.networkName"
-          toFieldPath: "spec.forProvider.routes[0].gatewayIdRef"
+          toFieldPath: "spec.forProvider.routes[0].gatewayIdRef.name"
           transforms:
             - type: string
               string:
                 fmt: "%s-ig"
         - fromFieldPath: "spec.network.networkName"
-          toFieldPath: "spec.forProvider.associations[0].subnetIdRef"
+          toFieldPath: "spec.forProvider.associations[0].subnetIdRef.name"
           transforms:
             - type: string
               string:
                 fmt: "%s-sn0"
         - fromFieldPath: "spec.network.networkName"
-          toFieldPath: "spec.forProvider.associations[1].subnetIdRef"
+          toFieldPath: "spec.forProvider.associations[1].subnetIdRef.name"
           transforms:
             - type: string
               string:
@@ -184,14 +184,14 @@ spec:
               string:
                 fmt: "%s-ng"
         - fromFieldPath: "spec.eks.clusterName"
-          toFieldPath: "spec.froProvider.clusternameRef"
+          toFieldPath: "spec.forProvider.clusterName"
         - fromFieldPath: "spec.nodeGroup.scalingConfig.minSize"
           toFieldPath: "spec.forProvider.scalingConfig.minSize"
         - fromFieldPath: "spec.nodeGroup.scalingConfig.maxSize"
           toFieldPath: "spec.forProvider.scalingConfig.maxSize"
         - fromFieldPath: "spec.nodeGroup.scalingConfig.desiredSize"
           toFieldPath: "spec.forProvider.scalingConfig.desiredSize"
-        - fromFieldPath: "spec.nwtworkNameName"
+        - fromFieldPath: "spec.network.networkName"
           toFieldPath: "spec.forProvider.subnetRefs[0].name"
           transforms:
             - type: string
@@ -258,15 +258,15 @@ spec:
           toFieldPath: "spec.forProvider.engineVersion"
         - fromFieldPath: "spec.rds.storageType"
           toFieldPath: "spec.forProvider.storageType"
-        - fromFieldPath: "spec.eks.name" # ex component id
-          toFieldPath: "spec.forProvider.writeConnectionSecretToRef.name"
+        - fromFieldPath: "spec.eks.clusterName" # ex component id
+          toFieldPath: "spec.writeConnectionSecretToRef.name"
           transforms:
             - type: string
               string:
                 fmt: "%s-rdspostgresql-conn"
     - base:
-        apiVersion: identity.aws.crossplane.io/v1beta1
-        kind: IAMRole
+        apiVersion: iam.aws.crossplane.io/v1beta1
+        kind: Role
         spec:
           forProvider:
             assumeRolePolicyDocument: |
@@ -289,15 +289,15 @@ spec:
           providerConfigRef:
             name: aws-stack-template-provider
       patches:
-        - fromFieldPath: "spec.eks.name"
+        - fromFieldPath: "spec.eks.clusterName"
           toFieldPath: "metadata.name"
           transforms:
             - type: string
               string:
-                fmt: "%s-controlplane"
+                fmt: "%s-controlplane"        
     - base:
-        apiVersion: identity.aws.crossplane.io/v1beta1
-        kind: IAMRolePolicyAttachment
+        apiVersion: iam.aws.crossplane.io/v1beta1
+        kind: RolePolicyAttachment
         spec:
           forProvider:
             policyArn: arn:aws:iam::aws:policy/AmazonEKSClusterPolicy
@@ -310,15 +310,15 @@ spec:
             - type: string
               string:
                 fmt: "%s-controlplane"
-        - fromFieldPath: "spec.eks.name" #ex component id
+        - fromFieldPath: "spec.eks.clusterName" #ex component id
           toFieldPath: "spec.forProvider.roleNameRef.name"
           transforms:
             - type: string
               string:
                 fmt: "%s-controlplane"
     - base:
-        apiVersion: identity.aws.crossplane.io/v1beta1
-        kind: IAMRole
+        apiVersion: iam.aws.crossplane.io/v1beta1
+        kind: Role
         spec:
           forProvider:
             assumeRolePolicyDocument: |
@@ -342,7 +342,7 @@ spec:
             name: aws-stack-template-provider
       patches:
         - fromFieldPath: "spec.eks.clusterName"
-          toFieldPath: "memetadata.name"
+          toFieldPath: "metadata.name"
           transforms:
             - type: string
               string:
@@ -354,8 +354,8 @@ spec:
               string:
                 fmt: "%s-ng-noderole"
     - base:
-        apiVersion: identity.aws.crossplane.io/v1beta1
-        kind: IAMRolePolicyAttachment
+        apiVersion: iam.aws.crossplane.io/v1beta1
+        kind: RolePolicyAttachment
         spec:
           forProvider:
             policyArn: arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy
@@ -375,8 +375,8 @@ spec:
               string:
                 fmt: "%s-ng-noderole"
     - base:
-        apiVersion: identity.aws.crossplane.io/v1beta1
-        kind: IAMRolePolicyAttachment
+        apiVersion: iam.aws.crossplane.io/v1beta1
+        kind: RolePolicyAttachment
         spec:
           forProvider:
             policyArn: arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy
@@ -396,8 +396,8 @@ spec:
               string:
                 fmt: "%s-ng-noderole"
     - base:
-        apiVersion: identity.aws.crossplane.io/v1beta1
-        kind: IAMRolePolicyAttachment
+        apiVersion: iam.aws.crossplane.io/v1beta1
+        kind: RolePolicyAttachment
         spec:
           forProvider:
             policyArn: arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
@@ -417,96 +417,317 @@ spec:
               string:
                 fmt: "%s-ng-noderole"
     - base:
-        apiVersion: kubernetes.crossplane.io/v1alpha1
-        kind: Object
+        apiVersion: helm.crossplane.io/v1beta1
+        kind: ProviderConfig
         spec:
-          forProvider:
-            manifest:
-              apiVersion: argoproj.io/v1alpha1
-              kind: Application
-              metadata:
-                namespace: krateo-system
-              spec:
-                project: default
-                source:
-                  targetRevision: HEAD
-                destination:
-                  server: https://kubernetes.default.svc
-                  namespace: krateo-system
+          credentials:
+            source: Secret
+            secretRef:
+              namespace: crossplane-system
+              key: kubeconfig
       patches:
-        - fromFieldPath: "metadata.name"
-          toFieldPath: "spec.forProvider.manifest.metadata.name"
+        - fromFieldPath: metadata.name
+          toFieldPath: metadata.name
           transforms:
             - type: string
               string:
-                fmt: "%s-argocd-app"
-        - type: CombineToComposite
-          combine:
-            variables:
-              - fromFieldPath: "spec.toRepo.schema"
-              - fromFieldPath: "spec.toRepo.domain"
-              - fromFieldPath: "spec.toRepo.organizationName"
-              - fromFieldPath: "spec.toRepo.repositoryName"
-            strategy: string
-            string:
-              fmt: "%s://%s/%s/%s"
-          toFieldPath: "spec.forProvider.manifest.spec.source.repoURL"
+                fmt: "%s-provider-helm-providerconfig"
+        - fromFieldPath: "spec.eks.clusterName"
+          toFieldPath: "spec.credentials.secretRef.name"
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-eks-kubeconfig"
+      readinessChecks:
+        - type: None
+    - base:
+        apiVersion: helm.crossplane.io/v1beta1
+        kind: Release
+        spec:
+          forProvider:
+            chart:
+              name: sysdig
+              repository: https://charts.sysdig.com
+              #version: 3.26.5
+            namespace: krateo-system
+            values:
+              image:
+                overrideValue:
+                registry: quay.io
+                repository: sysdig/agent
+                tag: 12.4.0
+                pullPolicy: IfNotPresent
+                resourceProfile: small
+              gke:
+                autopilot: false
+              rbac:
+                create: true
+              scc:
+                create: true
+              psp:
+                create: true
+              serviceAccount:
+                create: true
+                name: test-sysdig
+              daemonset:
+                deploy: true
+                updateStrategy:
+                  type: RollingUpdate
+                  rollingUpdate: {}
+                env: {}
+                nodeSelector: {}
+                arch:
+                  - amd64
+                  - arm64
+                  - s390x
+                os:
+                  - linux
+                affinity: {}
+                annotations: {}
+                labels: {}
+                probes:
+                  initialDelay: 90
+                kmodule:
+                  env: {}
+              ebpf:
+                enabled: false
+                settings:
+                  mountEtcVolume: true
+              slim:
+                enabled: false
+                image:
+                  repository: sysdig/agent-slim
+                kmoduleImage:
+                  repository: sysdig/agent-kmodule
+                  digest:
+                resources:
+                  requests:
+                    cpu: 1000m
+                    memory: 348Mi
+                  limits:
+                    memory: 512Mi
+              sysdig:
+                disableCaptures: false
+                settings: {collector: ingest-eu1.app.sysdig.com, collector_port: 6443}
+              secure:
+                enabled: true
+                vulnerabilityManagement:
+                  newEngineOnly: true
+              auditLog:
+                enabled: false
+                auditServerUrl: 0.0.0.0
+                auditServerPort: 7765
+                dynamicBackend:
+                  enabled: false
+              nodeImageAnalyzer:
+                deploy: false
+                image:
+                  repository: sysdig/node-image-analyzer
+                  tag: 0.1.16
+                  digest:
+                  pullPolicy: IfNotPresent
+                settings:
+                  debug: false
+                tolerations:
+                  - effect: NoSchedule
+                    key: node-role.kubernetes.io/master
+                extraVolumes:
+                  volumes: []
+                  mounts: []
+                resources:
+                  requests:
+                    cpu: 250m
+                    memory: 512Mi
+                  limits:
+                    cpu: 500m
+                    memory: 1024Mi
+                affinity:
+                  nodeAffinity:
+                    requiredDuringSchedulingIgnoredDuringExecution:
+                      nodeSelectorTerms:
+                        - matchExpressions:
+                            - key: kubernetes.io/arch
+                              operator: In
+                              values:
+                                - amd64
+                            - key: kubernetes.io/os
+                              operator: In
+                              values:
+                                - linux
+                        - matchExpressions:
+                            - key: beta.kubernetes.io/arch
+                              operator: In
+                              values:
+                                - amd64
+                            - key: beta.kubernetes.io/os
+                              operator: In
+                              values:
+                                - linux
+              nodeAnalyzer:
+                serviceAccount:
+                  create: true
+                  name: "node-analyzer"
+                deploy: true
+                apiEndpoint: "eu1.app.sysdig.com"
+                debug: false
+                tolerations:
+                  - effect: NoSchedule
+                    key: node-role.kubernetes.io/master
+                labels: {}
+                nodeSelector: {}
+                affinity:
+                  nodeAffinity:
+                    requiredDuringSchedulingIgnoredDuringExecution:
+                      nodeSelectorTerms:
+                        - matchExpressions:
+                            - key: kubernetes.io/arch
+                              operator: In
+                              values:
+                                - amd64
+                            - key: kubernetes.io/os
+                              operator: In
+                              values:
+                                - linux
+                        - matchExpressions:
+                            - key: beta.kubernetes.io/arch
+                              operator: In
+                              values:
+                                - amd64
+                            - key: beta.kubernetes.io/os
+                              operator: In
+                              values:
+                                - linux
+                imageAnalyzer:
+                  image:
+                    repository: sysdig/node-image-analyzer
+                    tag: 0.1.16
+                    digest:
+                    pullPolicy: IfNotPresent
+                  extraVolumes:
+                    volumes: []
+                    mounts: []
+                  resources:
+                    requests:
+                      cpu: 150m
+                      memory: 512Mi
+                    limits:
+                      cpu: 500m
+                      memory: 1536Mi
+                hostAnalyzer:
+                  image:
+                    repository: sysdig/host-analyzer
+                    tag: 0.1.6
+                    digest:
+                    pullPolicy: IfNotPresent
+                  schedule: "@dailydefault"
+                  resources:
+                    requests:
+                      cpu: 150m
+                      memory: 512Mi
+                    limits:
+                      cpu: 500m
+                      memory: 1536Mi
+                benchmarkRunner:
+                  includeSensitivePermissions: false
+                  image:
+                    repository: sysdig/compliance-benchmark-runner
+                    tag: 1.0.17.1
+                    digest:
+                    pullPolicy: IfNotPresent
+                  resources:
+                    requests:
+                      cpu: 150m
+                      memory: 128Mi
+                    limits:
+                      cpu: 500m
+                      memory: 256Mi
+                runtimeScanner:
+                  deploy: false
+                  image:
+                    repository: sysdig/vuln-runtime-scanner
+                    tag: 0.2.5
+                    digest:
+                    pullPolicy: IfNotPresent
+                  resources:
+                    requests:
+                      cpu: 150m
+                      memory: 512Mi
+                      ephemeral-storage: "2Gi"
+                    limits:
+                      cpu: 1000m
+                      memory: 2Gi
+                      ephemeral-storage: "4Gi"
+                  settings:
+                    eveEnabled: false
+                  eveConnector:
+                    deploy: false
+                    image:
+                      repository: sysdig/eveclient-api
+                      tag: 1.0.0
+                      digest:
+                      pullPolicy: IfNotPresent
+                    resources:
+                      requests:
+                        cpu: 100m
+                        memory: 128Mi
+                      limits:
+                        cpu: 1000m
+                        memory: 512Mi
+                    settings:
+                      replicas: 1
+              customAppChecks: {}
+              prometheus:
+                file: false
+                yaml: {}
+              extraVolumes:
+                volumes: []
+                mounts: []
+              tolerations:
+                - effect: NoSchedule
+                  key: node-role.kubernetes.io/master
+              leaderelection:
+                enable: false
+      patches:
+        - fromFieldPath: metadata.name
+          toFieldPath: "spec.providerConfigRef.name"
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-provider-helm-providerconfig"
+        - fromFieldPath: metadata.name
+          toFieldPath: metadata.name
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-release-sysdig"
+        - fromFieldPath: "spec.eks.clusterName"
+          toFieldPath: "spec.forProvider.values.clusterName"
+        - fromFieldPath: "spec.sysdig.accessKey"
+          toFieldPath: "spec.forProvider.values.sysdig.accessKey"
     - base:
         apiVersion: kubernetes.crossplane.io/v1alpha1
         kind: Object
+        metadata:
+          name: demo-pod
         spec:
           forProvider:
             manifest:
-              apiVersion: dashboard.krateo.io/v1alpha1
-              kind: Deployment
-              metadata:
+              apiVersion: v1
+              kind: Pod
               spec:
-                icon: "fa-brands fa-aws"
-                tags:
-                  - aws
-                  - stack
-                  - infrastructure
-                  - rds
-                links:
-                  - icon: "fa-brands fa-git"
-                  - url: https://kiratech.awsapps.com/start#/
-                    title: AWS Console
-                    icon: "fa-brands fa-aws"
-                plugins:
-                  - name: resources
-      patches:
-        - fromFieldPath: "spec.dashboard.description"
-          toFieldPath: "spec.forProvider.manifest.spec.description"
-        - fromFieldPath: "spec.name"
-          toFieldPath: "spec.forProvider.manifest.spec.name"
-        - type: CombineToComposite
-          combine:
-            variables:
-              - fromFieldPath: "spec.toRepo.schema"
-              - fromFieldPath: "spec.toRepo.domain"
-              - fromFieldPath: "spec.toRepo.organizationName"
-              - fromFieldPath: "spec.toRepo.repositoryName"
-            strategy: string
-            string:
-              fmt: "%s://%s/%s/%s"
-          toFieldPath: "spec.forProvider.manifest.spec.links[0].url"
-        - type: CombineToComposite
-          combine:
-            variables:
-              - fromFieldPath: "spec.toRepo.organizationName"
-              - fromFieldPath: "spec.toRepo.repositoryName"
-            strategy: string
-            string:
-              fmt: "%s/%s"
-          toFieldPath: "spec.forProvider.manifest.spec.links[0].title"
-        - type: CombineToComposite
-          combine:
-            variables:
-              - fromFieldPath: "spec.toRepo.organizationName"
-              - fromFieldPath: "spec.toRepo.repositoryName"
-            strategy: string
-            string:
-              fmt: "%s/%s"
-          toFieldPath: "spec.forProvider.manifest.spec.plugins[0].value"
-        - fromFieldPath: "spec.dashboard.owner"
-          toFieldPath: "spec.forProvider.manifest.spec.owner"
+                containers:
+                  - name: demo-container
+                    image: docker.io/bobcheat/spring-core:latest
+          providerConfigRef:
+            name: kubernetes-provider-outside
+    - base:
+        apiVersion: kubernetes.crossplane.io/v1alpha1
+        kind: ProviderConfig
+        metadata:
+          name: kubernetes-provider-outside
+        spec:
+          credentials:
+            source: Secret
+            secretRef:
+              namespace: crossplane-system
+              key: kubeconfig
