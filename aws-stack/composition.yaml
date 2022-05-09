@@ -444,6 +444,8 @@ spec:
         apiVersion: kubernetes.crossplane.io/v1alpha1
         kind: Object
         spec:
+          providerConfigRef:
+            name: krateo-module-core-provider-kubernetes-providerconfig-incluster
           forProvider:
             manifest:
               apiVersion: argoproj.io/v1alpha1
