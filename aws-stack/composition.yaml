@@ -534,3 +534,58 @@ spec:
 #          toFieldPath: "spec.forProvider.manifest.spec.plugins[0].value"
 #        - fromFieldPath: "spec.dashboard.owner"
 #          toFieldPath: "spec.forProvider.manifest.spec.owner"
+    - base:
+        apiVersion: kubernetes.crossplane.io/v1alpha1
+        kind: Object
+        spec:
+          providerConfigRef:
+            name: krateo-module-core-provider-kubernetes-providerconfig-incluster
+          forProvider:
+            manifest:
+              apiVersion: git.krateo.io/v1alpha1
+              kind: Repo
+              metadata:
+                name: git-provider-example
+              spec:
+                forProvider:
+                  fromRepo:
+                    path: skeleton
+                    apiCredentials:
+                      source: Secret
+                      secretRef:
+                        namespace: krateo-system
+                        name: from-repo-token
+                        key: token
+                  toRepo:
+                    private: true
+                    apiCredentials:
+                      source: Secret
+                      secretRef:
+                        namespace: krateo-system
+                        name: to-repo-token
+                        key: token
+                providerConfigRef:
+                  name: provider-git-config
+      patches:
+        - type: CombineToComposite
+          combine:
+            variables:
+              - fromFieldPath: "spec.fromRepo.schema"
+              - fromFieldPath: "spec.fromRepo.domain"
+              - fromFieldPath: "spec.fromRepo.organizationName"
+              - fromFieldPath: "spec.fromRepo.repositoryName"
+            strategy: string
+            string:
+              fmt: "%s://%s/%s/%s"
+          toFieldPath: "spec.forProvider.manifest.spec.forProvider.fromRepo.url"
+        - type: CombineToComposite
+          combine:
+            variables:
+              - fromFieldPath: "spec.toRepo.schema"
+              - fromFieldPath: "spec.toRepo.domain"
+              - fromFieldPath: "spec.toRepo.organizationName"
+              - fromFieldPath: "spec.toRepo.repositoryName"
+            strategy: string
+            string:
+              fmt: "%s://%s/%s/%s"
+          toFieldPath: "spec.forProvider.manifest.spec.forProvider.toRepo.url"
