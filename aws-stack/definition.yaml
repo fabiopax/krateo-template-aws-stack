@@ -146,11 +146,11 @@ spec:
                       type: object
                       properties:
                         minSize:
-                          type: number
+                          type: integer
                         maxSize:
-                          type: number
+                          type: integer
                         desiredSize:
-                          type: number
+                          type: integer
                     instanceTypes:
                       type: object #todo array
                       properties:
@@ -192,11 +192,11 @@ spec:
                     region:
                       type: string
                     allocatedStorage:
-                      type: number
+                      type: integer
                     autoMinorVersionUpgrade:
                       type: boolean
                     backupRetentionPeriod:
-                      type: number
+                      type: integer
                     caCertificateIdentifier:
                       type: string
                     copyTagsToSnapshot:
@@ -222,7 +222,7 @@ spec:
                     skipFinalSnapshotBeforeDeletion:
                       type: boolean
                     port:
-                      type: number
+                      type: integer
                     publiclyAccessible:
                       type: boolean
                     storageEncrypted:
