@@ -537,13 +537,6 @@ spec:
 #        - fromFieldPath: "spec.dashboard.owner"
 #          toFieldPath: "spec.forProvider.manifest.spec.owner"
     - base:
-        apiVersion: kubernetes.crossplane.io/v1alpha1
-        kind: Object
-        spec:
-          providerConfigRef:
-            name: krateo-module-core-provider-kubernetes-providerconfig-incluster
-          forProvider:
-            manifest:
               apiVersion: git.krateo.io/v1alpha1
               kind: Repo
               metadata:
@@ -567,7 +560,7 @@ spec:
                         name: to-repo-token
                         key: token
                 providerConfigRef:
-                  name: provider-git-config
+                  name: krateo-module-core-provider-git-providerconfig
       patches:
         - type: CombineToComposite
           combine:
@@ -579,7 +572,7 @@ spec:
             strategy: string
             string:
               fmt: "%s://%s/%s/%s"
-          toFieldPath: "spec.forProvider.manifest.spec.forProvider.fromRepo.url"
+          toFieldPath: "spec.forProvider.fromRepo.url"
         - type: CombineToComposite
           combine:
             variables:
@@ -590,4 +583,4 @@ spec:
             strategy: string
             string:
               fmt: "%s://%s/%s/%s"
-          toFieldPath: "spec.forProvider.manifest.spec.forProvider.toRepo.url"
+          toFieldPath: "spec.forProvider.toRepo.url"
