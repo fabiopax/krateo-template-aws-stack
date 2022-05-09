@@ -44,7 +44,7 @@ spec:
     owner: ${{ owner }}
   name: "${{ name }}"
   eks:
-    clusterName: ${{ clusterName }}"
+    clusterName: "${{ clusterName }}"
   network:
     networkName: "${{ networkName }}"
   rds:
