@@ -25,6 +25,22 @@ spec:
         value: ${{ organizationName }}-${{ repositoryName }}
         type: argocd
         icon: fa-solid fa-cookie
+      - name: documentation
+        values:
+          - README.md
+        type: doc
+        icon: fa-solid fa-book-skull
+      #- name: pipelines
+      #  values:
+      #    - Build STABLE Docker image for every commit
+      #    - "[github.com][krateoplatformops][krateo-module-core] CI"
+      #    - "[github.com][krateoplatformops][krateo-template-aws-stack] CI"
+      #  type: pipeline
+      #  icon: fa-solid fa-person-running
+      - name: kubernetes
+        value: "app=krateo.io"
+        type: kubernetes
+        icon: fa-brands fa-docker
     owner: ${{ owner }}
   name: "${{ name }}"
   eks:
