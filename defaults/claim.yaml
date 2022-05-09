@@ -48,6 +48,7 @@ spec:
   network:
     networkName: "${{ networkName }}"
   rds:
+    name: "${{ rdsName }}"
     region: "${{ rdsRegion }}"
     allocatedStorage: ${{ rdsDataDiskSizeGb }}
     dbInstanceClass: "${{ rdsInstanceClass }}"
