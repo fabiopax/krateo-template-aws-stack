@@ -21,9 +21,13 @@ spec:
               endpointPublicAccess: true
           writeConnectionSecretToRef:
               namespace: krateo-system
-          providerConfigRef:
-              name: aws-stack-template-provider
       patches:
+        - fromFieldPath: "metadata.name"
+          toFieldPath: "spec.providerConfigRef.name"
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-provider-aws-providerconfig-outcluster"
         - fromFieldPath: "spec.eks.clusterName"
           toFieldPath: "metadata.name"
         - fromFieldPath: "spec.network.networkName"
@@ -59,20 +63,28 @@ spec:
             cidrBlock: 10.1.0.0/16
             enableDnsSupport: true
             enableDnsHostNames: true
-          providerConfigRef:
-            name: aws-stack-template-provider
       patches:
         - fromFieldPath: "spec.network.networkName"
           toFieldPath: "metadata.name"
+        - fromFieldPath: "metadata.name"
+          toFieldPath: "spec.providerConfigRef.name"
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-provider-aws-providerconfig-outcluster"
     - base:
         apiVersion: ec2.aws.crossplane.io/v1beta1
         kind: InternetGateway
         spec:
           forProvider:
             region: eu-central-1
-          providerConfigRef:
-            name: aws-stack-template-provider
       patches:
+        - fromFieldPath: "metadata.name"
+          toFieldPath: "spec.providerConfigRef.name"
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-provider-aws-providerconfig-outcluster"
         - fromFieldPath: "spec.network.networkName"
           toFieldPath: "metadata.name"
           transforms:
@@ -94,9 +106,13 @@ spec:
             mapPublicIPOnLaunch: true
             cidrBlock: 10.1.1.0/24
             availabilityZone: eu-central-1a
-          providerConfigRef:
-            name: aws-stack-template-provider
       patches:
+        - fromFieldPath: "metadata.name"
+          toFieldPath: "spec.providerConfigRef.name"
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-provider-aws-providerconfig-outcluster"
         - fromFieldPath: "spec.network.networkName"
           toFieldPath: "metadata.name"
           transforms:
@@ -118,9 +134,13 @@ spec:
             mapPublicIPOnLaunch: true
             cidrBlock: 10.1.2.0/24
             availabilityZone: eu-central-1b
-          providerConfigRef:
-            name: aws-stack-template-provider
       patches:
+        - fromFieldPath: "metadata.name"
+          toFieldPath: "spec.providerConfigRef.name"
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-provider-aws-providerconfig-outcluster"
         - fromFieldPath: "spec.network.networkName"
           toFieldPath: "metadata.name"
           transforms:
@@ -137,9 +157,13 @@ spec:
             region: eu-central-1
             routes:
               - destinationCidrBlock: 0.0.0.0/0
-          providerConfigRef:
-            name: aws-stack-template-provider
       patches:
+        - fromFieldPath: "metadata.name"
+          toFieldPath: "spec.providerConfigRef.name"
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-provider-aws-providerconfig-outcluster"
         - fromFieldPath: "spec.network.networkName"
           toFieldPath: "metadata.name"
           transforms:
@@ -174,9 +198,13 @@ spec:
             region: eu-central-1
             instanceTypes:
               - t3.medium
-          providerConfigRef:
-            name: aws-stack-template-provider
       patches:
+        - fromFieldPath: "metadata.name"
+          toFieldPath: "spec.providerConfigRef.name"
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-provider-aws-providerconfig-outcluster"
         - fromFieldPath: "spec.eks.clusterName"
           toFieldPath: "metadata.name"
           transforms:
@@ -212,8 +240,6 @@ spec:
     - base:
         apiVersion: aws.crossplane.io/v1beta1
         kind: ProviderConfig
-        metadata:
-          name: aws-stack-template-provider
         spec:
           credentials:
             source: Secret
