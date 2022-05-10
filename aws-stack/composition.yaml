@@ -221,6 +221,13 @@ spec:
               namespace: crossplane-system
               name: aws-creds
               key: credentials
+      patches:
+        - fromFieldPath: "metadata.name"
+          toFieldPath: "metadata.name"
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-provider-aws-providerconfig-outcluster"
     - base:
         apiVersion: database.aws.crossplane.io/v1beta1
         kind: RDSInstance
@@ -243,9 +250,13 @@ spec:
             storageEncrypted: false
           writeConnectionSecretToRef:
             namespace: crossplane-system
-          providerConfigRef:
-            name: aws-stack-template-provider
       patches:
+        - fromFieldPath: "metadata.name"
+          toFieldPath: "spec.providerConfigRef.name"
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-provider-aws-providerconfig-outcluster"
         - fromFieldPath: "spec.rds.name"
           toFieldPath: "metadata.name"
         - fromFieldPath: "spec.rds.region"
@@ -286,9 +297,13 @@ spec:
                     }
                 ]
               }
-          providerConfigRef:
-            name: aws-stack-template-provider
       patches:
+        - fromFieldPath: "metadata.name"
+          toFieldPath: "spec.providerConfigRef.name"
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-provider-aws-providerconfig-outcluster"
         - fromFieldPath: "spec.eks.clusterName"
           toFieldPath: "metadata.name"
           transforms:
@@ -301,9 +316,13 @@ spec:
         spec:
           forProvider:
             policyArn: arn:aws:iam::aws:policy/AmazonEKSClusterPolicy
-          providerConfigRef:
-            name: aws-stack-template-provider
       patches:
+        - fromFieldPath: "metadata.name"
+          toFieldPath: "spec.providerConfigRef.name"
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-provider-aws-providerconfig-outcluster"
         - fromFieldPath: "spec.roles.policyAttachment.name"
           toFieldPath: "meatdata.name"
           transforms:
@@ -338,9 +357,13 @@ spec:
                     }
                 ]
               }
-          providerConfigRef:
-            name: aws-stack-template-provider
       patches:
+        - fromFieldPath: "metadata.name"
+          toFieldPath: "spec.providerConfigRef.name"
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-provider-aws-providerconfig-outcluster"
         - fromFieldPath: "spec.eks.clusterName"
           toFieldPath: "metadata.name"
           transforms:
@@ -359,9 +382,13 @@ spec:
         spec:
           forProvider:
             policyArn: arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy
-          providerConfigRef:
-            name: aws-stack-template-provider
       patches:
+        - fromFieldPath: "metadata.name"
+          toFieldPath: "spec.providerConfigRef.name"
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-provider-aws-providerconfig-outcluster"
         - fromFieldPath: "spec.eks.clusterName"
           toFieldPath: "metadata.name"
           transforms:
@@ -380,9 +407,13 @@ spec:
         spec:
           forProvider:
             policyArn: arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy
-          providerConfigRef:
-            name: aws-stack-template-provider
       patches:
+        - fromFieldPath: "metadata.name"
+          toFieldPath: "spec.providerConfigRef.name"
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-provider-aws-providerconfig-outcluster"
         - fromFieldPath: "spec.eks.clusterName"
           toFieldPath: "metadata.name"
           transforms:
@@ -401,9 +432,13 @@ spec:
         spec:
           forProvider:
             policyArn: arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
-          providerConfigRef:
-            name: aws-stack-template-provider
       patches:
+        - fromFieldPath: "metadata.name"
+          toFieldPath: "spec.providerConfigRef.name"
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-provider-aws-providerconfig-outcluster"
         - fromFieldPath: "spec.eks.clusterName"
           toFieldPath: "metadata.name"
           transforms:
@@ -460,6 +495,12 @@ spec:
                   server: https://kubernetes.default.svc
                   namespace: krateo-system
       patches:
+        - fromFieldPath: "metadata.name"
+          toFieldPath: "metadata.name"
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-argocd-app-object"
         - fromFieldPath: "metadata.name"
           toFieldPath: "spec.forProvider.manifest.metadata.name"
           transforms:
@@ -537,31 +578,35 @@ spec:
 #        - fromFieldPath: "spec.dashboard.owner"
 #          toFieldPath: "spec.forProvider.manifest.spec.owner"
     - base:
-              apiVersion: git.krateo.io/v1alpha1
-              kind: Repo
-              metadata:
-                name: git-provider-example
-              spec:
-                forProvider:
-                  fromRepo:
-                    path: skeleton
-                    apiCredentials:
-                      source: Secret
-                      secretRef:
-                        namespace: krateo-system
-                        name: from-repo-token
-                        key: token
-                  toRepo:
-                    private: true
-                    apiCredentials:
-                      source: Secret
-                      secretRef:
-                        namespace: krateo-system
-                        name: to-repo-token
-                        key: token
-                providerConfigRef:
-                  name: krateo-module-core-provider-git-providerconfig
+        apiVersion: git.krateo.io/v1alpha1
+        kind: Repo
+        spec:
+          forProvider:
+            fromRepo:
+              path: skeleton
+              apiCredentials:
+                source: Secret
+                secretRef:
+                  namespace: krateo-system
+                  name: from-repo-token
+                  key: token
+            toRepo:
+              private: true
+              apiCredentials:
+                source: Secret
+                secretRef:
+                  namespace: krateo-system
+                  name: to-repo-token
+                  key: token
+          providerConfigRef:
+            name: krateo-module-core-provider-git-providerconfig
       patches:
+        - fromFieldPath: "metadata.name"
+          toFieldPath: "metadata.name"
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-git-provider-example"
         - type: CombineFromComposite
           combine:
             variables:
