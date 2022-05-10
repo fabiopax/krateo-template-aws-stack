@@ -634,11 +634,11 @@ spec:
               string:
                 fmt: "%s-secret"
         - fromFieldPath: "spec.toRepo.domain"
-            toFieldPath: "spec.forProvider.toRepo.secretRef.name"
-            transforms:
-              - type: string
-                string:
-                  fmt: "%s-secret"
+          toFieldPath: "spec.forProvider.toRepo.secretRef.name"
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-secret"
         - fromFieldPath: "metadata.name"
           toFieldPath: "metadata.name"
           transforms:
