@@ -18,3 +18,17 @@ spec:
     dbInstanceClass: db.t3.micro
     engineVersion: '13.4'
     storageType: standard
+  fromRepo:
+    domain: github.com
+    provider: github
+    apiUrl: https://api.github.com/
+    repositoryName: krateo-template-aws-stack
+    organizationName: krateoplatformops
+    schema: https
+  toRepo:
+    domain: github.com
+    provider: github
+    apiUrl: https://api.github.com/
+    repositoryName: krateo-template-aws-stack
+    organizationName: krateoplatformops
+    schema: https

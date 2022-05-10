@@ -562,7 +562,7 @@ spec:
                 providerConfigRef:
                   name: krateo-module-core-provider-git-providerconfig
       patches:
-        - type: CombineToComposite
+        - type: CombineFromComposite
           combine:
             variables:
               - fromFieldPath: "spec.fromRepo.schema"
@@ -573,7 +573,7 @@ spec:
             string:
               fmt: "%s://%s/%s/%s"
           toFieldPath: "spec.forProvider.fromRepo.url"
-        - type: CombineToComposite
+        - type: CombineFromComposite
           combine:
             variables:
               - fromFieldPath: "spec.toRepo.schema"
