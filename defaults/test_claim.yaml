@@ -29,6 +29,6 @@ spec:
     domain: github.com
     provider: github
     apiUrl: https://api.github.com/
-    repositoryName: krateo-template-aws-stack
+    repositoryName: krateo-template-aws-stack-test-git-provider
     organizationName: krateoplatformops
     schema: https
