@@ -2,15 +2,15 @@
 apiVersion: apiextensions.crossplane.io/v1
 kind: CompositeResourceDefinition
 metadata:
-  name: aws-stack.templates.krateo.io
+  name: krateo-template-aws-stack.templates.krateo.io
   labels:
     platform: aws
 spec:
   group: templates.krateo.io
   names:
-    kind: aws-stack
-    singular: aws-stack
-    plural: aws-stack
+    kind: krateo-template-aws-stack
+    singular: krateo-template-aws-stack
+    plural: krateo-template-aws-stack
   versions:
     - name: v1alpha1
       served: true

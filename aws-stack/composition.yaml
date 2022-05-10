@@ -2,13 +2,13 @@
 apiVersion: apiextensions.crossplane.io/v1
 kind: Composition
 metadata:
-  name: deploy.aws-stack.templates.krateo.io
+  name: deploy.krateo-template-aws-stack.templates.krateo.io
   labels:
     platform: aws
 spec:
   compositeTypeRef:
     apiVersion: templates.krateo.io/v1alpha1
-    kind: aws-stack
+    kind: krateo-template-aws-stack
   resources:
     - base:
         apiVersion: eks.aws.crossplane.io/v1beta1
@@ -533,7 +533,7 @@ spec:
             - type: string
               string:
                 fmt: "%s-argocd-app"
-        - type: CombineToComposite
+        - type: CombineFromComposite
           combine:
             variables:
               - fromFieldPath: "spec.toRepo.schema"
@@ -627,6 +627,18 @@ spec:
           providerConfigRef:
             name: krateo-module-core-provider-git-providerconfig
       patches:
+        - fromFieldPath: "spec.fromRepo.domain"
+          toFieldPath: "spec.forProvider.fromRepo.secretRef.name"
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-secret"
+        - fromFieldPath: "spec.toRepo.domain"
+            toFieldPath: "spec.forProvider.toRepo.secretRef.name"
+            transforms:
+              - type: string
+                string:
+                  fmt: "%s-secret"
         - fromFieldPath: "metadata.name"
           toFieldPath: "metadata.name"
           transforms:
