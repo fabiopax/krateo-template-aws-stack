@@ -608,22 +608,18 @@ spec:
         kind: Repo
         spec:
           forProvider:
-            fromRepo:
-              path: skeleton
-              apiCredentials:
-                source: Secret
-                secretRef:
-                  namespace: krateo-system
-                  name: from-repo-token
-                  key: token
-            toRepo:
-              private: true
-              apiCredentials:
-                source: Secret
-                secretRef:
-                  namespace: krateo-system
-                  name: to-repo-token
-                  key: token
+            fromRepoCredentials:
+              source: Secret
+              secretRef:
+                namespace: krateo-system
+                name: from-repo-token
+                key: token
+            toRepoCredentials:
+              source: Secret
+              secretRef:
+                namespace: krateo-system
+                name: to-repo-token
+                key: token
           providerConfigRef:
             name: krateo-module-core-provider-git-providerconfig
       patches:

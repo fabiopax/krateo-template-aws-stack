@@ -1,8 +1,8 @@
 ---
 apiVersion: templates.krateo.io/v1alpha1
-kind: aws-stack
+kind: krateo-template-aws-stack
 metadata:
-  name: aws-stack
+  name: krateo-template-aws-stack
 spec:
   compositionSelector:
     matchLabels:
