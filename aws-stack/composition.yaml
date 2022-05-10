@@ -623,6 +623,8 @@ spec:
           providerConfigRef:
             name: krateo-module-core-provider-git-providerconfig
       patches:
+        - fromFieldPath: "metadata.deploymentId"
+          toFieldPath: "spec.forProvider.deploymentId"
         - fromFieldPath: "spec.fromRepo.domain"
           toFieldPath: "spec.forProvider.fromRepo.secretRef.name"
           transforms:
