@@ -1,17 +1,17 @@
 ---
 apiVersion: templates.krateo.io/v1alpha1
-kind: krateo-template-aws-stack
+kind: aws-stack
 metadata:
-  name: krateo-template-aws-stack
+  name: aws-stack-tigera
 spec:
   compositionSelector:
     matchLabels:
       platform: aws
-  name: test-aws-meetup
+  name: aws-stack-tigera
   eks:
-    clusterName: test-aws-meetup-eks
+    clusterName: aws-stack-tigera-cluster
   network:
-    networkName: test-aws-meetup-network
+    networkName: aws-stack-tigera-network
   rds:
     region: eu-central-1
     allocatedStorage: 10 #ex dataDiskSizeGb
@@ -29,6 +29,6 @@ spec:
     domain: github.com
     provider: github
     apiUrl: https://api.github.com/
-    repositoryName: krateo-template-aws-stack-test-git-provider
+    repositoryName: aws-stack-tigera-stack
     organizationName: krateoplatformops
     schema: https
