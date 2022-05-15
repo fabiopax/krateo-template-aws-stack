@@ -2,15 +2,15 @@
 apiVersion: apiextensions.crossplane.io/v1
 kind: CompositeResourceDefinition
 metadata:
-  name: krateo-template-aws-stack.templates.krateo.io
+  name: aws-stack.templates.krateo.io
   labels:
     platform: aws
 spec:
   group: templates.krateo.io
   names:
-    kind: krateo-template-aws-stack
-    singular: krateo-template-aws-stack
-    plural: krateo-template-aws-stack
+    kind: aws-stack
+    singular: aws-stack
+    plural: aws-stack
   versions:
     - name: v1alpha1
       served: true
@@ -280,7 +280,7 @@ spec:
                       type: string
                     organizationName:
                       type: string
-                    schema: 
+                    schema:
                       type: string
                 toRepo:
                   type: object
@@ -300,7 +300,7 @@ spec:
                 dashboard:
                   type: object
                   properties:
-                    name: 
+                    name:
                       type: string
                     description:
                       type: string
@@ -313,16 +313,16 @@ spec:
                             type: string
                           title:
                             type: string
-                          icon: 
+                          icon:
                             type: string
                       plugins:
                         type: array
                         items:
                           type: object
                           properties:
-                            name: 
+                            name:
                               type: string
                             value:
                               type: string
-                      owner: 
+                      owner:
                         type: string

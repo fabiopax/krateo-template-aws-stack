@@ -2,13 +2,13 @@
 apiVersion: apiextensions.crossplane.io/v1
 kind: Composition
 metadata:
-  name: deploy.krateo-template-aws-stack.templates.krateo.io
+  name: deploy.aws-stack.templates.krateo.io
   labels:
     platform: aws
 spec:
   compositeTypeRef:
     apiVersion: templates.krateo.io/v1alpha1
-    kind: krateo-template-aws-stack
+    kind: aws-stack
   resources:
     - base:
         apiVersion: aws.crossplane.io/v1beta1
