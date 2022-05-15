@@ -1,6 +1,6 @@
 ---
 apiVersion: templates.krateo.io/v1alpha1
-kind: krateo-template-aws-stack
+kind: aws-stack
 metadata:
   name: ${{ deploymentId }}-aws-stack
   deploymentId: ${{ deploymentId }}
