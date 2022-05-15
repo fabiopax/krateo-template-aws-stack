@@ -2,7 +2,7 @@
 apiVersion: templates.krateo.io/v1alpha1
 kind: krateo-template-aws-stack
 metadata:
-  name: ${{ deploymentId }}-krateo-template-aws-stack
+  name: ${{ deploymentId }}-aws-stack
   deploymentId: ${{ deploymentId }}
 spec:
   dashboard:
