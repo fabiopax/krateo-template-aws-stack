@@ -26,7 +26,7 @@ spec:
           transforms:
             - type: string
               string:
-                fmt: "%s-provider-aws-providerconfig"
+                fmt: "%s-provider-aws-pc"
     - base:
         apiVersion: eks.aws.crossplane.io/v1beta1
         kind: Cluster
@@ -44,7 +44,7 @@ spec:
           transforms:
             - type: string
               string:
-                fmt: "%s-provider-aws-providerconfig"
+                fmt: "%s-provider-aws-pc"
         - fromFieldPath: "spec.eks.clusterName"
           toFieldPath: "metadata.name"
         - fromFieldPath: "spec.network.networkName"
@@ -88,7 +88,7 @@ spec:
           transforms:
             - type: string
               string:
-                fmt: "%s-provider-aws-providerconfig"
+                fmt: "%s-provider-aws-pc"
     - base:
         apiVersion: ec2.aws.crossplane.io/v1beta1
         kind: InternetGateway
@@ -101,7 +101,7 @@ spec:
           transforms:
             - type: string
               string:
-                fmt: "%s-provider-aws-providerconfig"
+                fmt: "%s-provider-aws-pc"
         - fromFieldPath: "spec.network.networkName"
           toFieldPath: "metadata.name"
           transforms:
@@ -129,7 +129,7 @@ spec:
           transforms:
             - type: string
               string:
-                fmt: "%s-provider-aws-providerconfig"
+                fmt: "%s-provider-aws-pc"
         - fromFieldPath: "spec.network.networkName"
           toFieldPath: "metadata.name"
           transforms:
@@ -157,7 +157,7 @@ spec:
           transforms:
             - type: string
               string:
-                fmt: "%s-provider-aws-providerconfig"
+                fmt: "%s-provider-aws-pc"
         - fromFieldPath: "spec.network.networkName"
           toFieldPath: "metadata.name"
           transforms:
@@ -180,7 +180,7 @@ spec:
           transforms:
             - type: string
               string:
-                fmt: "%s-provider-aws-providerconfig"
+                fmt: "%s-provider-aws-pc"
         - fromFieldPath: "spec.network.networkName"
           toFieldPath: "metadata.name"
           transforms:
@@ -221,7 +221,7 @@ spec:
           transforms:
             - type: string
               string:
-                fmt: "%s-provider-aws-providerconfig"
+                fmt: "%s-provider-aws-pc"
         - fromFieldPath: "spec.eks.clusterName"
           toFieldPath: "metadata.name"
           transforms:
@@ -270,7 +270,7 @@ spec:
           transforms:
             - type: string
               string:
-                fmt: "%s-provider-aws-providerconfig"
+                fmt: "%s-provider-aws-pc"
     - base:
         apiVersion: database.aws.crossplane.io/v1beta1
         kind: RDSInstance
@@ -299,7 +299,7 @@ spec:
           transforms:
             - type: string
               string:
-                fmt: "%s-provider-aws-providerconfig"
+                fmt: "%s-provider-aws-pc"
         - fromFieldPath: "spec.rds.name"
           toFieldPath: "metadata.name"
         - fromFieldPath: "spec.rds.region"
@@ -346,7 +346,7 @@ spec:
           transforms:
             - type: string
               string:
-                fmt: "%s-provider-aws-providerconfig"
+                fmt: "%s-provider-aws-pc"
         - fromFieldPath: "spec.eks.clusterName"
           toFieldPath: "metadata.name"
           transforms:
@@ -365,7 +365,7 @@ spec:
           transforms:
             - type: string
               string:
-                fmt: "%s-provider-aws-providerconfig"
+                fmt: "%s-provider-aws-pc"
         - fromFieldPath: "spec.roles.policyAttachment.name"
           toFieldPath: "meatdata.name"
           transforms:
@@ -406,7 +406,7 @@ spec:
           transforms:
             - type: string
               string:
-                fmt: "%s-provider-aws-providerconfig"
+                fmt: "%s-provider-aws-pc"
         - fromFieldPath: "spec.eks.clusterName"
           toFieldPath: "metadata.name"
           transforms:
@@ -431,7 +431,7 @@ spec:
           transforms:
             - type: string
               string:
-                fmt: "%s-provider-aws-providerconfig"
+                fmt: "%s-provider-aws-pc"
         - fromFieldPath: "spec.eks.clusterName"
           toFieldPath: "metadata.name"
           transforms:
@@ -456,7 +456,7 @@ spec:
           transforms:
             - type: string
               string:
-                fmt: "%s-provider-aws-providerconfig"
+                fmt: "%s-provider-aws-pc"
         - fromFieldPath: "spec.eks.clusterName"
           toFieldPath: "metadata.name"
           transforms:
@@ -481,7 +481,7 @@ spec:
           transforms:
             - type: string
               string:
-                fmt: "%s-provider-aws-providerconfig"
+                fmt: "%s-provider-aws-pc"
         - fromFieldPath: "spec.eks.clusterName"
           toFieldPath: "metadata.name"
           transforms:
@@ -506,31 +506,7 @@ spec:
           transforms:
             - type: string
               string:
-                fmt: "%s-provider-k8s-providerconfig-in"
-      readinessChecks:
-        - type: None
-    - base:
-        apiVersion: helm.crossplane.io/v1beta1
-        kind: ProviderConfig
-        spec:
-          credentials:
-            source: Secret
-            secretRef:
-              namespace: krateo-system
-              key: kubeconfig
-      patches:
-        - fromFieldPath: metadata.name
-          toFieldPath: metadata.name
-          transforms:
-            - type: string
-              string:
-                fmt: "%s-provider-helm-providerconfig"
-        - fromFieldPath: "spec.eks.clusterName"
-          toFieldPath: "spec.credentials.secretRef.name"
-          transforms:
-            - type: string
-              string:
-                fmt: "%s-eks-kubeconfig"
+                fmt: "%s-provider-k8s-pc-in"
       readinessChecks:
         - type: None
     - base:
@@ -568,7 +544,7 @@ spec:
           transforms:
             - type: string
               string:
-                fmt: "%s-provider-k8s-providerconfig-in"
+                fmt: "%s-provider-k8s-pc-in"
         - type: CombineFromComposite
           combine:
             variables:
@@ -661,7 +637,7 @@ spec:
           transforms:
             - type: string
               string:
-                fmt: "%s-provider-git-providerconfig"
+                fmt: "%s-provider-git-pc"
     - base:
         apiVersion: git.krateo.io/v1alpha1
         kind: Repo
@@ -720,4 +696,124 @@ spec:
           transforms:
             - type: string
               string:
-                fmt: "%s-provider-git-providerconfig"
+                fmt: "%s-provider-git-pc"
+    - base:
+        apiVersion: helm.crossplane.io/v1beta1
+        kind: ProviderConfig
+        spec:
+          credentials:
+            source: Secret
+            secretRef:
+              namespace: krateo-system
+              key: kubeconfig
+      patches:
+        - fromFieldPath: metadata.name
+          toFieldPath: metadata.name
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-provider-helm-eks"
+        - fromFieldPath: "spec.eks.clusterName"
+          toFieldPath: "spec.credentials.secretRef.name"
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-eks-kubeconfig"
+      readinessChecks:
+        - type: None
+    - base:
+        apiVersion: kubernetes.crossplane.io/v1alpha1
+        kind: ProviderConfig
+        spec:
+          credentials:
+            source: Secret
+            secretRef:
+              namespace: krateo-system
+              key: kubeconfig
+      patches:
+        - fromFieldPath: metadata.name
+          toFieldPath: metadata.name
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-provider-k8s-eks"
+        - fromFieldPath: "spec.eks.clusterName"
+          toFieldPath: "spec.credentials.secretRef.name"
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-eks-kubeconfig"
+      readinessChecks:
+        - type: None
+    - base:
+        apiVersion: kubernetes.crossplane.io/v1alpha1
+        kind: Object
+        spec:
+          forProvider:
+            manifest:
+              apiVersion: v1
+              kind: Namespace
+              metadata:
+                name: tigera-operator
+                labels:
+                  name: tigera-operator
+      patches:
+        - fromFieldPath: metadata.name
+          toFieldPath: spec.providerConfigRef.name
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-provider-k8s-eks"
+    - base:
+        apiVersion: kubernetes.crossplane.io/v1alpha1
+        kind: Object
+        spec:
+          forProvider:
+            manifest:
+              apiVersion: storage.k8s.io/v1
+              kind: StorageClass
+              metadata:
+                name: tigera-elasticsearch
+              provisioner: kubernetes.io/aws-ebs
+              parameters:
+                type: gp2
+                fsType: ext4
+              reclaimPolicy: Retain
+              allowVolumeExpansion: true
+              volumeBindingMode: WaitForFirstConsumer
+      patches:
+        - fromFieldPath: metadata.name
+          toFieldPath: spec.providerConfigRef.name
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-provider-k8s-eks"
+    - base:
+        apiVersion: helm.crossplane.io/v1beta1
+        kind: Release
+        metadata:
+          annotations:
+            crossplane.io/external-name: calico
+        spec:
+          forProvider:
+            chart:
+              name: projectcalico/tigera-operator
+              repository: https://projectcalico.docs.tigera.io/charts
+              version: 3.23.0
+            namespace: krateo-system
+            values:
+              installation:
+                kubernetesProvider: EKS
+      patches:
+        - fromFieldPath: metadata.name
+          toFieldPath: metadata.name
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-release-calico"
+        - fromFieldPath: metadata.name
+          toFieldPath: spec.providerConfigRef.name
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-provider-helm-eks"
